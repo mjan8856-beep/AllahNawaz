@@ -14,11 +14,14 @@ import Achievements from './components/Achievements';
 import FAQ from './components/FAQ';
 import Contact from './components/Contact';
 import Footer from './components/Footer';
+import ScrollToTop from './components/ScrollToTop';
 
 export default function App() {
   return (
-    <div className="font-sans text-foreground bg-background min-h-screen relative overflow-hidden selection:bg-accent selection:text-background">
+    <div className="font-sans text-foreground bg-background min-h-screen relative overflow-hidden selection:bg-accent selection:text-white">
+      <div className="grain-overlay" />
       <Navbar />
+      <ScrollToTop />
 
       <motion.main
         initial={{ opacity: 0 }}

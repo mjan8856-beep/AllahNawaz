@@ -1,136 +1,241 @@
 import { motion } from 'motion/react';
 import { 
   Palette, 
-  Smartphone, 
-  ShoppingBag, 
   Zap, 
-  Monitor,
-  Component,
-  Search,
   Workflow,
   Layers,
-  Code,
-  PenTool,
-  Figma
+  ThumbsUp,
+  LogIn
 } from 'lucide-react';
+import { useState, useEffect } from 'react';
+import { 
+  db, 
+  auth, 
+  signInWithGoogle, 
+  OperationType, 
+  handleFirestoreError 
+} from '../lib/firebase';
+import { 
+  doc, 
+  onSnapshot, 
+  runTransaction, 
+  serverTimestamp,
+  collection,
+  query,
+  where,
+  getDocs
+} from 'firebase/firestore';
 
 const groupedSkills = [
   {
     category: "Design Specialization",
     icon: Palette,
     items: [
-      { name: "Product Strategy & UX", desc: "Aligning user needs with business goals to drive measurable impact." },
-      { name: "SaaS Dashboards", desc: "Simplifying complex data into intuitive, actionable user interfaces." },
-      { name: "Design Systems", desc: "Building scalable, accessible component libraries for consistent branding." },
-      { name: "Mobile-First UX", desc: "Crafting fluid, responsive cross-platform native and web experiences." },
+      { id: "product-strategy", name: "Product Strategy & UX", desc: "Aligning user needs with business goals to drive measurable impact." },
+      { id: "saas-dashboards", name: "SaaS Dashboards", desc: "Simplifying complex data into intuitive, actionable user interfaces." },
+      { id: "design-systems", name: "Design Systems", desc: "Building scalable, accessible component libraries for consistent branding." },
+      { id: "mobile-ux", name: "Mobile-First UX", desc: "Crafting fluid, responsive cross-platform native and web experiences." },
     ]
   },
   {
     category: "Methodology & Execution",
     icon: Workflow,
     items: [
-      { name: "High-Fidelity Prototyping", desc: "Creating realistic, interactive mockups to validate features early." },
-      { name: "Interaction Design", desc: "Designing micro-interactions that breathe life into digital products." },
-      { name: "Conversion Optimization", desc: "E-commerce funnels tailored to decrease friction and increase sales." },
-      { name: "Human-Centered Research", desc: "Usability testing, interviews, and analytics-driven design decisions." },
+      { id: "hi-fi-proto", name: "High-Fidelity Prototyping", desc: "Creating realistic, interactive mockups to validate features early." },
+      { id: "interaction-design", name: "Interaction Design", desc: "Designing micro-interactions that breathe life into digital products." },
+      { id: "conversion-opt", name: "Conversion Optimization", desc: "E-commerce funnels tailored to decrease friction and increase sales." },
+      { id: "human-research", name: "Human-Centered Research", desc: "Usability testing, interviews, and analytics-driven design decisions." },
     ]
   },
   {
     category: "Software Ecosystem",
     icon: Layers,
     items: [
-      { name: "Figma & FigJam", desc: "Advanced autolayout, variables, and collaborative brainstorming." },
-      { name: "Front-End Implementation", desc: "React, Tailwind CSS, and Framer Motion for pixel-perfect handoffs." },
-      { name: "Adobe Creative Suite", desc: "Illustrator and Photoshop for custom vector graphics and visual assets." },
-      { name: "Interactive Web (Framer)", desc: "Building robust, animated, and deployment-ready web experiences." },
+      { id: "figma", name: "Figma & FigJam", desc: "Advanced autolayout, variables, and collaborative brainstorming." },
+      { id: "frontend", name: "Front-End Implementation", desc: "React, Tailwind CSS, and Framer Motion for pixel-perfect handoffs." },
+      { id: "adobe-suite", name: "Adobe Creative Suite", desc: "Illustrator and Photoshop for custom vector graphics and visual assets." },
+      { id: "framer", name: "Interactive Web (Framer)", desc: "Building robust, animated, and deployment-ready web experiences." },
     ]
   }
 ];
 
 export default function Skills() {
-  const containerVariants = {
-    hidden: { opacity: 0 },
-    visible: {
-      opacity: 1,
-      transition: {
-        staggerChildren: 0.1,
-        delayChildren: 0.2
+  const [user, setUser] = useState(auth.currentUser);
+  const [endorsements, setEndorsements] = useState<Record<string, number>>({});
+  const [myEndorsements, setMyEndorsements] = useState<Record<string, boolean>>({});
+  const [loading, setLoading] = useState<Record<string, boolean>>({});
+  const [justEndorsed, setJustEndorsed] = useState<Record<string, boolean>>({});
+  const [alreadyEndorsed, setAlreadyEndorsed] = useState<Record<string, boolean>>({});
+
+  useEffect(() => {
+    const unsubscribeAuth = auth.onAuthStateChanged((u) => {
+      setUser(u);
+    });
+
+    const unsubscribeSkills = onSnapshot(collection(db, 'skills'), (snapshot) => {
+      const counts: Record<string, number> = {};
+      snapshot.forEach((doc) => {
+        counts[doc.id] = doc.data().endorsementsCount || 0;
+      });
+      setEndorsements(counts);
+    }, (error) => {
+      handleFirestoreError(error, OperationType.LIST, 'skills');
+    });
+
+    return () => {
+      unsubscribeAuth();
+      unsubscribeSkills();
+    };
+  }, []);
+
+  const handleEndorse = async (skillId: string, skillName: string) => {
+    if (!user) {
+      try {
+        await signInWithGoogle();
+      } catch (err) {
+        return;
       }
     }
-  };
 
-  const cardVariants = {
-    hidden: { opacity: 0, y: 30 },
-    visible: { 
-      opacity: 1, 
-      y: 0,
-      transition: { duration: 0.6, ease: "easeOut" }
+    if (loading[skillId]) return;
+
+    setLoading(prev => ({ ...prev, [skillId]: true }));
+
+    try {
+      const skillRef = doc(db, 'skills', skillId);
+      const voterRef = doc(db, 'skills', skillId, 'voters', auth.currentUser!.uid);
+
+      await runTransaction(db, async (transaction) => {
+        const voterDoc = await transaction.get(voterRef);
+        if (voterDoc.exists()) {
+          throw new Error("You have already endorsed this skill.");
+        }
+
+        const skillDoc = await transaction.get(skillRef);
+        if (!skillDoc.exists()) {
+          transaction.set(skillRef, {
+            name: skillName,
+            endorsementsCount: 1
+          });
+        } else {
+          transaction.update(skillRef, {
+            endorsementsCount: (skillDoc.data().endorsementsCount || 0) + 1
+          });
+        }
+
+        transaction.set(voterRef, {
+          userId: auth.currentUser!.uid,
+          timestamp: serverTimestamp()
+        });
+      });
+      
+      setJustEndorsed(prev => ({ ...prev, [skillId]: true }));
+      setMyEndorsements(prev => ({ ...prev, [skillId]: true }));
+    } catch (error) {
+      if (error instanceof Error && error.message.includes("already endorsed")) {
+        setMyEndorsements(prev => ({ ...prev, [skillId]: true }));
+        setAlreadyEndorsed(prev => ({ ...prev, [skillId]: true }));
+        setTimeout(() => setAlreadyEndorsed(prev => ({ ...prev, [skillId]: false })), 500);
+      } else {
+        handleFirestoreError(error, OperationType.WRITE, `skills/${skillId}`);
+      }
+    } finally {
+      setLoading(prev => ({ ...prev, [skillId]: false }));
     }
   };
 
   return (
-    <section id="skills" aria-labelledby="skills-title" className="py-24 px-6 sm:px-10 lg:px-20 border-t border-border-dim bg-background-dim/30">
-      <div className="max-w-7xl mx-auto">
-        <motion.div 
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.8 }}
-          className="mb-16 md:mb-24"
-        >
-          <h2 
-            id="skills-title"
-            className="text-4xl md:text-5xl font-serif italic text-foreground mb-6"
-          >
-            Skills & Expertise
-          </h2>
-          <p className="text-muted max-w-2xl text-lg leading-relaxed">
-            A comprehensive toolkit designed to bridge the gap between human needs and business objectives. From initial strategy to pixel-perfect execution.
-          </p>
-        </motion.div>
+    <section id="skills" className="py-32 px-6 sm:px-10 lg:px-20 bg-background overflow-hidden relative">
+      <div className="max-w-7xl mx-auto flex flex-col gap-16">
+        
+        {/* Section Heading */}
+        <div className="flex flex-col md:flex-row justify-between items-start md:items-end gap-10">
+          <div className="max-w-2xl">
+            <motion.div 
+              initial={{ opacity: 0, scale: 0.9 }}
+              whileInView={{ opacity: 1, scale: 1 }}
+              className="inline-flex items-center gap-3 px-4 py-2 rounded-full border border-white/10 bg-white/5 backdrop-blur-md mb-8"
+            >
+              <div className="w-1.5 h-1.5 rounded-full bg-white animate-pulse" />
+              <span className="text-[11px] uppercase tracking-[0.2em] font-bold text-white">Skills & Toolkit</span>
+            </motion.div>
+            <h2 className="text-5xl md:text-6xl font-display font-bold text-white tracking-tight leading-tight">
+              Mastery & <span className="text-white/40">Expertise</span>
+            </h2>
+            <p className="text-muted text-lg mt-6 leading-relaxed">
+              Bridging the gap between human needs and business objectives with a high-end design ecosystem.
+            </p>
+          </div>
+          
+          {!user && (
+            <motion.button 
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
+              onClick={() => signInWithGoogle()}
+              className="flex items-center gap-2 px-8 py-4 rounded-full bg-white text-black font-bold text-sm shadow-xl shadow-white/5"
+            >
+              <LogIn size={16} />
+              Sign in to Endorse
+            </motion.button>
+          )}
+        </div>
 
-        <motion.div 
-          variants={containerVariants}
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true }}
-          className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6 lg:gap-10"
-        >
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
           {groupedSkills.map((group, index) => (
             <motion.div
               key={index}
-              variants={cardVariants}
-              whileHover={{ y: -8, scale: 1.02 }}
-              className="group relative flex flex-col p-8 sm:p-10 bg-white/[0.02] border border-border-dim hover:border-accent/30 rounded-2xl transition-all duration-500 overflow-hidden hover:shadow-2xl hover:shadow-accent/5"
+              initial={{ opacity: 0, y: 30 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ delay: index * 0.1, duration: 0.8 }}
+              viewport={{ once: true }}
+              className="glass-card p-10 rounded-[2.5rem] flex flex-col gap-10 hover:bg-white/[0.06] transition-all duration-500 group"
             >
-              <div className="absolute top-0 right-0 p-8 opacity-5 group-hover:opacity-10 transform scale-150 group-hover:scale-110 transition-all duration-700 pointer-events-none">
-                <group.icon size={120} />
-              </div>
-              
-              <div className="flex items-center gap-4 mb-10 relative z-10">
-                <div className="p-3 bg-accent/10 text-accent rounded-xl transform-gpu transition-all duration-500 group-hover:scale-110 group-hover:-rotate-3 group-hover:bg-accent/20">
-                  <group.icon size={24} />
+              <div className="flex items-center gap-6">
+                <div className="w-16 h-16 rounded-[1.5rem] bg-white/5 border border-white/10 flex items-center justify-center group-hover:bg-white group-hover:text-black transition-all duration-500">
+                  <group.icon size={28} />
                 </div>
-                <h3 className="text-xl font-medium tracking-wide text-foreground">
-                  {group.category}
-                </h3>
+                <h3 className="text-2xl font-display font-bold text-white">{group.category}</h3>
               </div>
               
-              <div className="space-y-8 relative z-10 flex-grow">
-                {group.items.map((item, itemIndex) => (
-                  <div key={itemIndex} className="group/item">
-                    <h4 className="text-sm uppercase tracking-widest text-foreground font-bold mb-2 group-hover/item:text-accent transition-colors duration-300">
-                      {item.name}
-                    </h4>
-                    <p className="text-muted text-sm leading-relaxed">
-                      {item.desc}
-                    </p>
+              <div className="flex flex-col gap-10">
+                {group.items.map((item, itemIdx) => (
+                  <div key={itemIdx} className="flex justify-between items-start gap-6">
+                    <div className="flex-grow">
+                      <h4 className="text-base font-bold text-white mb-2 leading-tight">{item.name}</h4>
+                      <p className="text-sm text-muted leading-relaxed">{item.desc}</p>
+                    </div>
+                    
+                    <button 
+                      onClick={() => handleEndorse(item.id, item.name)}
+                      disabled={loading[item.id] || (myEndorsements[item.id] && !alreadyEndorsed[item.id])}
+                      className={`flex flex-col items-center gap-1.5 p-3 rounded-[1.25rem] transition-all duration-300 relative ${
+                        myEndorsements[item.id] 
+                        ? 'bg-white text-black' 
+                        : 'bg-white/5 border border-white/5 hover:border-white/20 text-white/40 hover:text-white'
+                      }`}
+                    >
+                      <motion.div
+                        animate={justEndorsed[item.id] ? { scale: [1, 1.3, 1], rotate: [0, -15, 15, 0] } : alreadyEndorsed[item.id] ? { x: [0, -4, 4, -4, 4, 0] } : {}}
+                      >
+                        <ThumbsUp size={18} fill={myEndorsements[item.id] ? "currentColor" : "none"} />
+                      </motion.div>
+                      <span className="text-[12px] font-bold">{endorsements[item.id] || 0}</span>
+                      
+                      {alreadyEndorsed[item.id] && (
+                        <motion.div
+                          initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: -25 }} exit={{ opacity: 0 }}
+                          className="absolute bottom-full left-1/2 -translate-x-1/2 bg-white text-black text-[10px] px-3 py-1.5 rounded-xl font-bold whitespace-nowrap shadow-xl"
+                        >
+                          Already Endorsed
+                        </motion.div>
+                      )}
+                    </button>
                   </div>
                 ))}
               </div>
             </motion.div>
           ))}
-        </motion.div>
+        </div>
       </div>
     </section>
   );

@@ -91,7 +91,7 @@ export default function Contact() {
   };
 
   const getInputStatusClass = (fieldName: keyof typeof errors) => {
-    if (!touched[fieldName]) return 'border-border-dim focus:border-accent';
+    if (!touched[fieldName]) return 'border-white/20 focus:border-white';
     if (errors[fieldName]) return 'border-red-500/50 focus:border-red-500';
     return 'border-green-500/50 focus:border-green-500';
   };
@@ -108,15 +108,15 @@ export default function Contact() {
         >
           <h2 
             id="contact-title"
-            className="text-[10px] sm:text-xs text-accent uppercase tracking-widest font-bold mb-4"
+            className="text-[11px] sm:text-xs text-white/50 uppercase tracking-[0.2em] font-semibold mb-6"
           >
             Get In Touch
           </h2>
-          <p className="text-3xl md:text-5xl font-serif italic text-foreground mb-6">
-            Have a project in mind? Let's talk.
+          <p className="text-4xl md:text-6xl font-display font-medium text-foreground tracking-tight mb-6">
+            Let's build something <span className="text-white/40 italic font-serif">exceptional.</span>
           </p>
-          <p className="text-muted max-w-lg mx-auto">
-            Fill out the form below and I'll get back to you as soon as possible.
+          <p className="text-white/60 font-light max-w-lg mx-auto text-lg">
+            Fill out the form below and I'll get back to you within 24 hours.
           </p>
         </motion.div>
 
@@ -126,12 +126,12 @@ export default function Contact() {
           viewport={{ once: true }}
           transition={{ duration: 0.8, delay: 0.2 }}
           onSubmit={handleSubmit}
-          className="space-y-6 bg-white/[0.02] p-8 md:p-10 rounded-2xl border border-border-dim backdrop-blur-sm"
+          className="space-y-8"
           noValidate
         >
-          <div className="grid md:grid-cols-2 gap-6">
+          <div className="grid md:grid-cols-2 gap-8">
             <div className="relative">
-              <label htmlFor="name" className="block text-[10px] uppercase tracking-widest text-muted mb-2 font-bold">Name</label>
+              <label htmlFor="name" className="block text-[11px] uppercase tracking-[0.1em] text-white/50 mb-3 font-semibold">Name</label>
               <div className="relative">
                 <input 
                   type="text" 
@@ -143,14 +143,14 @@ export default function Contact() {
                   disabled={isSubmitting || submitSuccess}
                   aria-invalid={!!errors.name}
                   aria-describedby={errors.name ? 'name-error' : undefined}
-                  className={`w-full bg-background/50 border rounded-lg px-4 py-3 text-foreground focus:outline-none focus:ring-1 focus:ring-accent transition-all ${getInputStatusClass('name')} disabled:opacity-50`}
-                  placeholder="Ali"
+                  className={`w-full bg-transparent border-b px-0 py-4 text-lg text-foreground focus:outline-none transition-all placeholder:text-white/20 ${getInputStatusClass('name')} disabled:opacity-50`}
+                  placeholder="John Doe"
                 />
                 {touched.name && !errors.name && (
-                  <CheckCircle2 className="absolute right-3 top-1/2 -translate-y-1/2 text-green-500 w-4 h-4" />
+                  <CheckCircle2 className="absolute right-0 top-1/2 -translate-y-1/2 text-green-500 w-4 h-4" />
                 )}
                 {touched.name && errors.name && (
-                  <AlertCircle className="absolute right-3 top-1/2 -translate-y-1/2 text-red-500 w-4 h-4" />
+                  <AlertCircle className="absolute right-0 top-1/2 -translate-y-1/2 text-red-500 w-4 h-4" />
                 )}
               </div>
               <AnimatePresence mode="wait">
@@ -169,7 +169,7 @@ export default function Contact() {
             </div>
 
             <div className="relative">
-              <label htmlFor="email" className="block text-[10px] uppercase tracking-widest text-muted mb-2 font-bold">Email</label>
+              <label htmlFor="email" className="block text-[11px] uppercase tracking-[0.1em] text-white/50 mb-3 font-semibold">Email</label>
               <div className="relative">
                 <input 
                   type="email" 
@@ -181,14 +181,14 @@ export default function Contact() {
                   disabled={isSubmitting || submitSuccess}
                   aria-invalid={!!errors.email}
                   aria-describedby={errors.email ? 'email-error' : undefined}
-                  className={`w-full bg-background/50 border rounded-lg px-4 py-3 text-foreground focus:outline-none focus:ring-1 focus:ring-accent transition-all ${getInputStatusClass('email')} disabled:opacity-50`}
-                  placeholder="ali@example.com"
+                  className={`w-full bg-transparent border-b px-0 py-4 text-lg text-foreground focus:outline-none transition-all placeholder:text-white/20 ${getInputStatusClass('email')} disabled:opacity-50`}
+                  placeholder="contact@domain.com"
                 />
                 {touched.email && !errors.email && (
-                  <CheckCircle2 className="absolute right-3 top-1/2 -translate-y-1/2 text-green-500 w-4 h-4" />
+                  <CheckCircle2 className="absolute right-0 top-1/2 -translate-y-1/2 text-green-500 w-4 h-4" />
                 )}
                 {touched.email && errors.email && (
-                  <AlertCircle className="absolute right-3 top-1/2 -translate-y-1/2 text-red-500 w-4 h-4" />
+                  <AlertCircle className="absolute right-0 top-1/2 -translate-y-1/2 text-red-500 w-4 h-4" />
                 )}
               </div>
               <AnimatePresence mode="wait">
@@ -207,8 +207,8 @@ export default function Contact() {
             </div>
           </div>
 
-          <div className="relative">
-            <label htmlFor="message" className="block text-[10px] uppercase tracking-widest text-muted mb-2 font-bold">Message</label>
+          <div className="relative mt-8">
+            <label htmlFor="message" className="block text-[11px] uppercase tracking-[0.1em] text-white/50 mb-3 font-semibold">Message</label>
             <div className="relative">
               <textarea 
                 id="message"
@@ -217,17 +217,17 @@ export default function Contact() {
                 onChange={handleChange}
                 onBlur={handleBlur}
                 disabled={isSubmitting || submitSuccess}
-                rows={5}
+                rows={4}
                 aria-invalid={!!errors.message}
                 aria-describedby={errors.message ? 'message-error' : undefined}
-                className={`w-full bg-background/50 border rounded-lg px-4 py-3 text-foreground focus:outline-none focus:ring-1 focus:ring-accent transition-all resize-y ${getInputStatusClass('message')} disabled:opacity-50`}
-                placeholder="Tell me about your project..."
+                className={`w-full bg-transparent border-b px-0 py-4 text-lg text-foreground focus:outline-none transition-all resize-none placeholder:text-white/20 ${getInputStatusClass('message')} disabled:opacity-50`}
+                placeholder="Tell me about your vision..."
               />
               {touched.message && !errors.message && (
-                <CheckCircle2 className="absolute right-3 top-6 text-green-500 w-4 h-4" />
+                <CheckCircle2 className="absolute right-0 top-6 text-green-500 w-4 h-4" />
               )}
               {touched.message && errors.message && (
-                <AlertCircle className="absolute right-3 top-6 text-red-500 w-4 h-4" />
+                <AlertCircle className="absolute right-0 top-6 text-red-500 w-4 h-4" />
               )}
             </div>
             <AnimatePresence mode="wait">

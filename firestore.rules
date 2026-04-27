@@ -1,0 +1,64 @@
+rules_version = '2';
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+    // Default deny
+    match /{document=**} {
+      allow read, write: if false;
+    }
+
+    // Global helpers
+    function isSignedIn() {
+      return request.auth != null;
+    }
+
+    function isValidId(id) {
+      return id is string && id.size() <= 128 && id.matches('^[a-zA-Z0-9_\\-]+$');
+    }
+
+    function incoming() {
+      return request.resource.data;
+    }
+
+    function existing() {
+      return resource.data;
+    }
+
+    // Skill entity validation
+    function isValidSkill(data) {
+      return data.keys().hasAll(['name', 'endorsementsCount']) &&
+             data.keys().size() == 2 &&
+             data.name is string && data.name.size() <= 100 &&
+             data.endorsementsCount is int && data.endorsementsCount >= 0;
+    }
+
+    // Voter entity validation
+    function isValidVoter(data) {
+      return data.keys().hasAll(['userId', 'timestamp']) &&
+             data.keys().size() == 2 &&
+             data.userId == request.auth.uid &&
+             data.timestamp == request.time;
+    }
+
+    match /skills/{skillId} {
+      allow read: if true;
+      
+      // Allow creation of a skill by admin? Or maybe simplify and allow anyone to create if it doesn't exist?
+      // Since it's a fixed list in the UI, I'll allow admins to manage, but users to update.
+      // For this demo, let's allow anyone to create a skill if they are signed in (lazy creation on first vote).
+      allow create: if isSignedIn() && isValidSkill(incoming()) && incoming().endorsementsCount == 1;
+      
+      allow update: if isSignedIn() && isValidSkill(incoming()) && (
+        // Action: Endorse
+        (incoming().endorsementsCount == existing().endorsementsCount + 1 &&
+         incoming().name == existing().name &&
+         existsAfter(/databases/$(database)/documents/skills/$(skillId)/voters/$(request.auth.uid)))
+      );
+      
+      match /voters/{userId} {
+        allow read: if true;
+        allow create: if isSignedIn() && userId == request.auth.uid && isValidVoter(incoming());
+      }
+    }
+  }
+}

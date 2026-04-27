@@ -1,724 +1,606 @@
-import React, { useState, useEffect, useRef } from 'react';
-import { motion, AnimatePresence, useScroll, useTransform } from 'motion/react';
-import { ExternalLink, ArrowRight, Palette, ChevronLeft, ChevronRight, ImageOff, Linkedin, X, Maximize2, Clock, Calendar, Search } from 'lucide-react';
-
-const TiktokIcon = ({ size = 24, className = '', "aria-hidden": ariaHidden }: { size?: number, className?: string, "aria-hidden"?: boolean | "true" | "false" }) => (
-  <svg 
-    xmlns="http://www.w3.org/2000/svg" 
-    width={size} 
-    height={size} 
-    viewBox="0 0 24 24" 
-    fill="currentColor" 
-    className={className}
-    aria-hidden={ariaHidden}
-  >
-    <path d="M19.589 6.686a4.793 4.793 0 0 1-3.77-4.245V2h-3.445v13.672a2.896 2.896 0 0 1-5.201 1.743l-.002-.001.002.001a2.895 2.895 0 0 1 3.183-4.51v-3.5a6.329 6.329 0 0 0-5.394 10.692 6.33 6.33 0 0 0 10.857-4.424V8.622a8.182 8.182 0 0 0 4.77 1.526V6.79a4.831 4.831 0 0 1-1.003-.104z"/>
-  </svg>
-);
-
-const UpworkIcon = ({ size = 24, className = '', "aria-hidden": ariaHidden }: { size?: number, className?: string, "aria-hidden"?: boolean | "true" | "false" }) => (
-  <svg xmlns="http://www.w3.org/2000/svg" width={size} height={size} viewBox="0 0 24 24" fill="currentColor" className={className} aria-hidden={ariaHidden}>
-    <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zm-1-12h2v4c0 1.1.9 2 2 2s2-.9 2-2V8h2v4c0 2.21-1.79 4-4 4s-4-1.79-4-4V8z"/>
-  </svg>
-);
-
-const FiverrIcon = ({ size = 24, className = '', "aria-hidden": ariaHidden }: { size?: number, className?: string, "aria-hidden"?: boolean | "true" | "false" }) => (
-  <svg xmlns="http://www.w3.org/2000/svg" width={size} height={size} viewBox="0 0 24 24" fill="currentColor" className={className} aria-hidden={ariaHidden}>
-    <path d="M12 2C6.477 2 2 6.477 2 12s4.477 10 10 10 10-4.477 10-10S17.523 2 12 2zM9 16H6v-6h3c1.657 0 3 1.343 3 3s-1.343 3-3 3zm9-6h-3v4c0 1.105.895 2 2 2s2-.895 2-2v-4zm-4.5 3c0-2.485 2.015-4.5 4.5-4.5s4.5 2.015 4.5 4.5-2.015 4.5-4.5 4.5S13.5 15.485 13.5 13z"/>
-  </svg>
-);
+import { motion, AnimatePresence } from 'motion/react';
+import { Palette, ExternalLink, ArrowRight, X, Calendar, Clock, Globe, ChevronLeft, ChevronRight } from 'lucide-react';
+import { useState, useRef, useEffect, useCallback } from 'react';
 
 const projects = [
   {
-    title: "Global SaaS Analytics",
-    tag: "Product Strategy",
-    timeline: "3 Months",
-    completionDate: "Sept 2025",
-    stack: "Figma • Design Systems • React",
-    technologies: ["React", "Tailwind CSS", "Framer Motion"],
-    challenge: "Fragmented membership data causing high administrative churn.",
-    solution: "A unified analytics ecosystem that reduced task-time by 40% and improved data visibility.",
-    testimonial: {
-      quote: "The unified dashboard fundamentally changed how we manage our data. We saved countless administrative hours.",
-      author: "Client feedback"
+    title: "Brain Book Branding",
+    tag: "Brand Identity",
+    timeline: "3 Weeks",
+    completionDate: "Dec 2025",
+    elevatorPitch: "A clean, cognitive-focused visual identity that elevates learning retention.",
+    problemStatement: "Friction in User Journey: Users felt overwhelmed by traditional, cluttered educational interfaces, preventing sustained engagement.",
+    strategicSolution: "Implemented a high-contrast, minimalist visual system utilizing geometric forms to signify neural pathways, establishing immediate trust and reducing cognitive load.",
+    uxPillars: {
+      userCentricity: "Streamlined navigation elements to reduce decision fatigue.",
+      visualImpact: "Employed deep contrasts and stark geometry for a premium, authoritative feel.",
+      scalability: "Crafted a robust Figma component library ensuring consistent application across all touchpoints."
     },
-    behanceUrl: "https://www.behance.net/gallery/237971145/Conectlab",
+    technicalExpertise: "Figma • Adobe Creative Cloud",
+    result: "Achieved a sophisticated, intuitive identity that dramatically increased user retention and platform credibility.",
+    behanceUrl: "https://www.behance.net/gallery/218563555/brain-book-e-comerce-landing-pages",
     images: [
-      "https://images.unsplash.com/photo-1551288049-bbbda5366392?auto=format&fit=crop&q=80&w=1000&h=600",
-      "https://images.unsplash.com/photo-1460925895917-afdab827c52f?auto=format&fit=crop&q=80&w=1000&h=600",
-      "https://images.unsplash.com/photo-1542744094-24638eff58bb?auto=format&fit=crop&q=80&w=1000&h=600"
+      "https://mir-s3-cdn-cf.behance.net/project_modules/1400_webp/84667a218563555.67a371a228d8b.png",
+      "https://mir-s3-cdn-cf.behance.net/project_modules/1400_webp/0fbb4a218563369.67a37133b4034.png"
     ]
   },
   {
-    title: "E-commerce Mobile App",
-    tag: "UX Research",
-    timeline: "6 Weeks",
-    completionDate: "Q4 2025",
-    stack: "Figma • ProtoPie • UX Lab",
-    technologies: ["React Native", "Firebase", "Stripe"],
-    challenge: "High checkout abandonment due to technical user friction.",
-    solution: "A conversion-focused 3-step checkout flow optimized for mobile-first shoppers.",
-    testimonial: {
-      quote: "Our checkout completion rate increased by dramatically after launching the new intuitive flow.",
-      author: "Client feedback"
-    },
-    behanceUrl: "https://www.behance.net/gallery/247688047/Fintech-Mobile-App-UIUX-Concept-Payfast",
-    images: [
-      "https://images.unsplash.com/photo-1512941937669-90a1b58e7e9c?auto=format&fit=crop&q=80&w=1000&h=600",
-      "/input_file_1.png",
-      "https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?auto=format&fit=crop&q=80&w=1000&h=600"
-    ]
-  },
-  {
-    title: "Smarter Influencer AI",
-    tag: "AI & Marketing",
-    timeline: "8 Weeks",
+    title: "Clevarex Book",
+    tag: "E-commerce",
+    timeline: "2 Weeks",
     completionDate: "Jan 2026",
-    stack: "React • Node.js • Gemini AI",
-    technologies: ["Node.js", "Gemini AI", "Tailwind CSS"],
-    challenge: "Traditional influencer marketing lacks predictable ROI and data-driven creator matching.",
-    solution: "An AI-powered platform that predicts content performance and matches brands with high-conversion creators.",
-    testimonial: {
-      quote: "A visionary design that makes complex AI data incredibly intuitive and actionable.",
-      author: "Client feedback"
+    elevatorPitch: "A high-converting product page designed to instill trust and drive sales through clarity.",
+    problemStatement: "Information Overload: Potential buyers were struggling to parse complex product benefits, leading to high bounce rates.",
+    strategicSolution: "Designed a linear, progressive-disclosure layout that chunked information logically, pairing compelling copywriting with elegant typography to guide the user naturally to the CTA.",
+    uxPillars: {
+      userCentricity: "Removed extraneous choices, focusing squarely on the core value proposition.",
+      visualImpact: "Utilized lush whitespace and serif typography for a refined, literary aesthetic.",
+      scalability: "Built with responsive Auto-layout rules for flawless mobile-to-desktop scaling."
     },
+    technicalExpertise: "Figma • Webflow",
+    result: "A pixel-perfect e-commerce experience that substantially boosted conversion metrics and brand perception.",
+    behanceUrl: "https://www.behance.net/gallery/216365471/Clevarex-Book-(Ecomerce-Product-Design)",
+    images: [
+      "https://mir-s3-cdn-cf.behance.net/project_modules/1400_webp/387626216365471.677eb030b492e.png"
+    ]
+  },
+  {
+    title: "Alpine Shilajeet",
+    tag: "E-commerce",
+    timeline: "3 Weeks",
+    completionDate: "Dec 2025",
+    elevatorPitch: "An immersive online storefront reflecting the purity and premium quality of natural supplements.",
+    problemStatement: "Lack of Visual Hierarchy: The previous design failed to convey the premium, organic nature of the product, resulting in low perceived value.",
+    strategicSolution: "Curated an earth-toned palette and sophisticated typography to establish an organic yet luxurious brand presence, emphasizing provenance and quality.",
+    uxPillars: {
+      userCentricity: "Simplified the path-to-purchase with a frictionless, single-page checkout flow.",
+      visualImpact: "Integrated high-fidelity, earthy imagery with subtle parallax effects for depth.",
+      scalability: "Established a comprehensive design token system for future product line expansions."
+    },
+    technicalExpertise: "Figma • Framer",
+    result: "A world-class digital storefront that authenticates the brand and drives high-value conversions.",
+    behanceUrl: "https://www.behance.net/gallery/216364721/Alpine-Shilajeet-(E-comerce-Product-Design)",
+    images: [
+      "https://mir-s3-cdn-cf.behance.net/project_modules/1400_webp/da0332216364721.677eae5893b44.png"
+    ]
+  },
+  {
+    title: "Freelancer Brand",
+    tag: "Graphic Design",
+    timeline: "1 Week",
+    completionDate: "Feb 2026",
+    elevatorPitch: "A bold visual language enabling independent talent to cut through marketplace noise.",
+    problemStatement: "Generic Aesthetic: Freelancers struggled to differentiate themselves, relying on templated designs that failed to communicate specific expertise.",
+    strategicSolution: "Developed a bold, disruptive visual identity characterized by high-contrast typography and vivid color blocking, instantly capturing attention and conveying authority.",
+    uxPillars: {
+      userCentricity: "Designed social assets to be instantly readable in fast-scrolling environments.",
+      visualImpact: "Used stark, brutalist-inspired layouts for maximum 'scroll-stopping' power.",
+      scalability: "Created a modular template system allowing rapid generation of personalized assets."
+    },
+    technicalExpertise: "Adobe Photoshop • Illustrator",
+    result: "A sleek, commanding visual toolkit that elevates individual freelancer profiles to agency-level professionalism.",
+    behanceUrl: "https://www.behance.net/gallery/248269629/FrelancerGIG",
+    images: [
+      "https://mir-s3-cdn-cf.behance.net/project_modules/1400_webp/42dc1c248269629.69edebbc342ca.png",
+      "https://images.unsplash.com/photo-1626785774573-4b799315345d?auto=format&fit=crop&q=80&w=1000&h=600"
+    ]
+  },
+  {
+    title: "AI Influencer",
+    tag: "UI/UX Design",
+    timeline: "5 Weeks",
+    completionDate: "Mar 2026",
+    elevatorPitch: "A highly intuitive dashboard synthesizing complex AI metrics for instantaneous strategic action.",
+    problemStatement: "Cognitive Overload: Users were overwhelmed by dense, unstructured data, leading to decision paralysis.",
+    strategicSolution: "Architected a streamlined dashboard prioritizing critical KPIs. Emphasized clear visual hierarchy and progressive disclosure to surface actionable insights dynamically.",
+    uxPillars: {
+      userCentricity: "Mapped user workflows to ensure one-click access to top programmatic recommendations.",
+      visualImpact: "Applied a dark-mode thematic with neon data visualizations for a futuristic, polished aesthetic.",
+      scalability: "Implemented a fully systematic UI kit with nested components for data tables and charts."
+    },
+    technicalExpertise: "Figma • React Prototypes",
+    result: "A sophisticated, highly functional data product that empowers brand managers with zero learning curve.",
     behanceUrl: "https://www.behance.net/gallery/237969847/Smarter-Influencer-Marketingwith-AI",
     images: [
-      "https://images.unsplash.com/photo-1611162617474-5b21e879e113?auto=format&fit=crop&q=80&w=1000&h=600",
-      "/input_file_0.png",
-      "https://images.unsplash.com/photo-1533750349088-cd871a92f312?auto=format&fit=crop&q=80&w=1000&h=600"
+      "https://mir-s3-cdn-cf.behance.net/project_modules/1400_webp/ecc1ed237969847.690b5825347ce.png",
+      "https://mir-s3-cdn-cf.behance.net/project_modules/2800_webp/ecc1ed237969847.690b5825347ce.png"
+    ]
+  },
+  {
+    title: "Wellness Social",
+    tag: "Social Media",
+    timeline: "2 Weeks",
+    completionDate: "Feb 2026",
+    elevatorPitch: "Trust-building digital assets that translate complex wellness advice into digestible, premium content.",
+    problemStatement: "Lack of Trust & Clarity: Existing content felt clinical and unapproachable, failing to engage the target demographic.",
+    strategicSolution: "Pioneered an editorial-style social grid. Merged warm, organic typography with highly structured layouts to convey both empathy and medical authority.",
+    uxPillars: {
+      userCentricity: "Prioritized typographic legibility and scannability on mobile viewports.",
+      visualImpact: "Introduced a soft, monochromatic palette elevated by fine-line iconography.",
+      scalability: "Engineered a master template file with global variables for seamless weekly updates."
+    },
+    technicalExpertise: "Figma • Adobe Creative Suite",
+    result: "A cohesive, elegant social presence that fostered deep audience engagement and brand authority.",
+    behanceUrl: "https://www.behance.net/gallery/245328781/WelllNessWell-Shalajit-Social-Media-Posts",
+    images: [
+      "https://mir-s3-cdn-cf.behance.net/project_modules/hd_webp/40b779245328781.69ab010361f7b.png",
+      "https://images.unsplash.com/photo-1544367567-0f2fcb009e0b?auto=format&fit=crop&q=80&w=1000&h=600"
+    ]
+  },
+  {
+    title: "Work AI Automation",
+    tag: "AI & Automation",
+    timeline: "4 Weeks",
+    completionDate: "Jan 2026",
+    elevatorPitch: "An enterprise-grade platform interface orchestrating autonomous workflows with absolute clarity.",
+    problemStatement: "Friction in User Journey: Complex operational configurations caused onboarding drop-offs and high user error rates.",
+    strategicSolution: "Reimagined the interaction model, replacing dense configuration forms with an intuitive, node-based visual builder to democratize automation setup.",
+    uxPillars: {
+      userCentricity: "Introduced drag-and-drop mechanics paired with contextual tooltips to eliminate guesswork.",
+      visualImpact: "Employed a stark, technical visual language with micro-interactions that confirm system states.",
+      scalability: "Built atop a strict atomic design system, ensuring consistency across hundreds of micro-states."
+    },
+    technicalExpertise: "Figma • Framer Motion",
+    result: "A mission-critical B2B application that drastically reduced time-to-value for enterprise teams.",
+    behanceUrl: "https://www.behance.net/gallery/247688047/Fintech-Mobile-App-UIUX-Concept-Payfast",
+    images: [
+      "https://mir-s3-cdn-cf.behance.net/project_modules/1400_webp/f14b3b247688047.69e090ead2f6a.png",
+      "https://images.unsplash.com/photo-1563986768609-322da13575f3?auto=format&fit=crop&q=80&w=1000&h=600"
+    ]
+  },
+  {
+    title: "Pet Food UI",
+    tag: "UI/UX Design",
+    timeline: "3 Weeks",
+    completionDate: "Dec 2025",
+    elevatorPitch: "A vibrant, frictionless retail experience anticipating the needs of modern pet owners.",
+    problemStatement: "Poor Findability: Catalog density made it difficult for users to quickly filter and locate specific dietary products.",
+    strategicSolution: "Restructured the information architecture, introducing smart categorization and an omni-present search capability within a joyful, approachable UI.",
+    uxPillars: {
+      userCentricity: "Implemented one-click reordering and explicit trust signals throughout the checkout phase.",
+      visualImpact: "Balanced playful, rounded UI elements with crisp, high-end product photography.",
+      scalability: "Standardized card components and padding variables for effortless inventory scaling."
+    },
+    technicalExpertise: "Figma • E-commerce Workflows",
+    result: "An engaging, conversion-optimized interface that merges brand warmth with transactional efficiency.",
+    behanceUrl: "https://www.behance.net/gallery/229096673/Pet-food-and-sales-web-ui",
+    images: [
+      "https://mir-s3-cdn-cf.behance.net/project_modules/1400_webp/f7a198229096673.685e7051c9889.png",
+      "https://images.unsplash.com/photo-1583511655857-d19b40a7a54e?auto=format&fit=crop&q=80&w=1000&h=600"
     ]
   }
 ];
 
-function ProjectCarousel({ images, title, onImageClick }: { images: string[], title: string, onImageClick: (index: number) => void }) {
-  const [currentIndex, setCurrentIndex] = useState(0);
-  const [isHovered, setIsHovered] = useState(false);
-  const [failedImages, setFailedImages] = useState<Set<number>>(new Set());
-
-  useEffect(() => {
-    let interval: ReturnType<typeof setInterval>;
-    if (isHovered && images.length > 1) {
-      interval = setInterval(() => {
-        setCurrentIndex((prev) => (prev + 1) % images.length);
-      }, 3000); // Slower cycle when hovering
-    }
-    return () => clearInterval(interval);
-  }, [isHovered, images.length]);
-
-  const handleNext = (e: React.MouseEvent) => {
-    e.stopPropagation();
-    e.preventDefault();
-    setCurrentIndex((prev) => (prev + 1) % images.length);
-  };
-
-  const handlePrev = (e: React.MouseEvent) => {
-    e.stopPropagation();
-    e.preventDefault();
-    setCurrentIndex((prev) => (prev - 1 + images.length) % images.length);
-  };
-
-  const handleImageError = () => {
-    setFailedImages((prev) => new Set(prev).add(currentIndex));
-  };
-
-  const isImageFailed = failedImages.has(currentIndex);
-
-  return (
-    <div 
-      className="relative w-full aspect-[16/10] overflow-hidden border-b border-border-dim group/carousel bg-white/[0.05]"
-      onMouseEnter={() => setIsHovered(true)}
-      onMouseLeave={() => {
-        setIsHovered(false);
-        setCurrentIndex(0);
-      }}
-      role="region"
-      aria-roledescription="carousel"
-      aria-label={`${title} image gallery`}
-    >
-      <AnimatePresence mode="popLayout">
-        {isImageFailed ? (
-          <motion.div
-            key={`fallback-${currentIndex}`}
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            className="w-full h-full flex flex-col items-center justify-center gap-3 bg-white/[0.02] text-muted p-4 text-center"
-            aria-live="polite"
-          >
-            <ImageOff size={32} className="opacity-20" aria-hidden="true" />
-            <p className="text-[10px] uppercase tracking-widest font-mono opacity-50">Mockup unavailable</p>
-          </motion.div>
-        ) : (
-          <motion.button
-            key={currentIndex}
-            onClick={(e) => {
-              e.preventDefault();
-              onImageClick(currentIndex);
-            }}
-            className="w-full h-full relative focus:outline-none focus:ring-2 focus:ring-accent focus:ring-inset group/imgbtn block p-0 overflow-hidden"
-            aria-label={`View larger version of ${title} mockup ${currentIndex + 1}`}
-          >
-            <motion.img 
-              src={images[currentIndex]} 
-              alt={`${title} mockup ${currentIndex + 1} of ${images.length}`}
-              initial={{ opacity: 0, scale: 1.05, filter: 'blur(10px)' }}
-              animate={{ opacity: 1, scale: isHovered ? 1.1 : 1, filter: 'blur(0px)' }}
-              exit={{ opacity: 0, scale: 1.05, filter: 'blur(10px)' }}
-              transition={{ duration: 0.8, ease: [0.4, 0, 0.2, 1] }}
-              className="w-full h-full object-cover"
-              loading="lazy"
-              decoding="async"
-              referrerPolicy="no-referrer"
-              onError={handleImageError}
-            />
-            <div className="absolute inset-0 flex items-center justify-center bg-black/40 opacity-0 group-hover/imgbtn:opacity-100 transition-opacity duration-300 pointer-events-none">
-              <Maximize2 size={32} className="text-white drop-shadow-[0_2px_10px_rgba(0,0,0,0.5)] scale-75 group-hover/imgbtn:scale-100 transition-transform duration-300" aria-hidden="true" />
-            </div>
-          </motion.button>
-        )}
-      </AnimatePresence>
-      
-      <div className="absolute inset-0 bg-gradient-to-t from-background/80 via-transparent to-transparent opacity-60 pointer-events-none" />
-      
-      {/* Navigation Arrows */}
-      <div className={`absolute inset-0 flex items-center justify-between px-4 z-30 transition-opacity duration-300 ${isHovered ? 'opacity-100' : 'opacity-0'}`}>
-        <button 
-          onClick={handlePrev}
-          className="p-2 rounded-full bg-black/40 backdrop-blur-md border border-white/10 text-white hover:bg-accent hover:text-black transition-all focus:opacity-100 focus:outline-none focus:ring-2 focus:ring-accent"
-          aria-label="Previous mockup"
-        >
-          <ChevronLeft size={16} aria-hidden="true" />
-        </button>
-        <button 
-          onClick={handleNext}
-          className="p-2 rounded-full bg-black/40 backdrop-blur-md border border-white/10 text-white hover:bg-accent hover:text-black transition-all focus:opacity-100 focus:outline-none focus:ring-2 focus:ring-accent"
-          aria-label="Next mockup"
-        >
-          <ChevronRight size={16} aria-hidden="true" />
-        </button>
-      </div>
-
-      {/* Indicators */}
-      <div className="absolute bottom-4 left-1/2 -translate-x-1/2 flex gap-1.5 z-20" role="tablist" aria-label="Mockup selection">
-        {images.map((_, i) => (
-          <button 
-            key={i}
-            onClick={(e) => {
-              e.stopPropagation();
-              setCurrentIndex(i);
-            }}
-            role="tab"
-            aria-selected={i === currentIndex}
-            aria-label={`Go to mockup ${i + 1}`}
-            className={`h-1.5 rounded-full transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-accent ${
-              i === currentIndex ? 'w-6 bg-accent' : 'w-1.5 bg-white/30 hover:bg-white/50'
-            }`} 
-          />
-        ))}
-      </div>
-
-      {/* Hover Message */}
-      <div className={`absolute top-4 right-4 text-[8px] uppercase tracking-widest bg-black/40 backdrop-blur-md px-2 py-1 rounded border border-white/10 transition-opacity duration-300 pointer-events-none ${isHovered ? 'opacity-0' : 'opacity-100'}`}>
-        Hover to cycle
-      </div>
-    </div>
-  );
-}
-
-function ProjectSkeleton() {
-  return (
-    <div className="p-0 bg-white/[0.02] border border-border-dim rounded-xl h-full flex flex-col overflow-hidden animate-pulse">
-      {/* Image Skeleton */}
-      <div className="w-full aspect-[16/10] bg-white/5 border-b border-border-dim" />
-      
-      {/* Content Skeleton */}
-      <div className="p-8 flex flex-col flex-grow">
-        <div className="flex justify-between items-start mb-6">
-          <div className="h-6 w-24 bg-white/5 rounded-full" />
-          <div className="h-4 w-4 bg-white/5 rounded-full" />
-        </div>
-        
-        <div className="h-8 w-3/4 bg-white/5 rounded mb-2" />
-        
-        <div className="flex justify-between items-center mb-4">
-          <div className="h-4 w-32 bg-white/5 rounded" />
-          <div className="flex gap-2">
-            <div className="h-6 w-20 bg-white/5 rounded-full" />
-          </div>
-        </div>
-        
-        <div className="flex gap-2 mb-6">
-          <div className="h-4 w-12 bg-white/5 rounded" />
-          <div className="h-4 w-16 bg-white/5 rounded" />
-          <div className="h-4 w-14 bg-white/5 rounded" />
-        </div>
-        
-        <div className="space-y-4 mb-6">
-          <div className="border-l-2 border-white/5 pl-4">
-            <div className="h-3 w-16 bg-white/5 rounded mb-2" />
-            <div className="h-3 w-full bg-white/5 rounded mb-1" />
-            <div className="h-3 w-5/6 bg-white/5 rounded" />
-          </div>
-          <div className="border-l-2 border-white/5 pl-4">
-            <div className="h-3 w-16 bg-white/5 rounded mb-2" />
-            <div className="h-3 w-full bg-white/5 rounded mb-1" />
-            <div className="h-3 w-4/5 bg-white/5 rounded" />
-          </div>
-        </div>
-        
-        <div className="mt-auto pt-6 border-t border-border-dim/50 flex flex-wrap justify-between gap-4">
-          <div className="h-4 w-28 bg-white/5 rounded" />
-          <div className="flex gap-2">
-            <div className="h-6 w-6 bg-white/5 rounded-full" />
-            <div className="h-6 w-6 bg-white/5 rounded-full" />
-          </div>
-        </div>
-      </div>
-    </div>
-  );
-}
-
 export default function Projects() {
-  const [lightbox, setLightbox] = useState<{ projectIndex: number, imageIndex: number } | null>(null);
-  const [sharedProject, setSharedProject] = useState<{ index: number, social: string } | null>(null);
-  const [isLoading, setIsLoading] = useState(true);
-  const [searchQuery, setSearchQuery] = useState("");
-  const closeBtnRef = useRef<HTMLButtonElement>(null);
+  const [selectedTag, setSelectedTag] = useState("All");
+  const [activeProject, setActiveProject] = useState<typeof projects[0] | null>(null);
   const sectionRef = useRef<HTMLElement>(null);
+  const modalRef = useRef<HTMLDivElement>(null);
+  const closeBtnRef = useRef<HTMLButtonElement>(null);
+  const titleRef = useRef<HTMLHeadingElement>(null);
+  const triggerRefs = useRef<{ [key: string]: HTMLDivElement | null }>({});
 
-  const { scrollYProgress } = useScroll({
-    target: sectionRef,
-    offset: ["start end", "end start"]
+  const tags = ["All", ...Array.from(new Set(projects.map(p => p.tag)))];
+
+  const filteredProjects = projects.filter(project => {
+    return selectedTag === "All" || project.tag === selectedTag;
   });
-  const yDecor1 = useTransform(scrollYProgress, [0, 1], ["-10%", "30%"]);
-  const yDecor2 = useTransform(scrollYProgress, [0, 1], ["20%", "-20%"]);
 
-  useEffect(() => {
-    // Simulate data fetching delay
-    const timer = setTimeout(() => {
-      setIsLoading(false);
-    }, 1500);
-    return () => clearTimeout(timer);
-  }, []);
+  const currentIndex = activeProject ? filteredProjects.findIndex(p => p.title === activeProject.title) : -1;
+
+  const handleNext = useCallback(() => {
+    if (currentIndex < filteredProjects.length - 1) {
+      setActiveProject(filteredProjects[currentIndex + 1]);
+    } else {
+      setActiveProject(filteredProjects[0]);
+    }
+  }, [currentIndex, filteredProjects]);
+
+  const handlePrev = useCallback(() => {
+    if (currentIndex > 0) {
+      setActiveProject(filteredProjects[currentIndex - 1]);
+    } else {
+      setActiveProject(filteredProjects[filteredProjects.length - 1]);
+    }
+  }, [currentIndex, filteredProjects]);
+
+  const closeModal = useCallback(() => {
+    const title = activeProject?.title;
+    setActiveProject(null);
+    if (title && triggerRefs.current[title]) {
+      // Small delay to ensure modal is closed before focusing
+      setTimeout(() => triggerRefs.current[title]?.focus(), 50);
+    }
+  }, [activeProject]);
 
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
-      if (!lightbox) return;
-      if (e.key === 'Escape') setLightbox(null);
-      if (e.key === 'ArrowRight') {
-        setLightbox(prev => {
-          if (!prev) return prev;
-          const currentImages = projects[prev.projectIndex].images;
-          return { ...prev, imageIndex: (prev.imageIndex + 1) % currentImages.length };
+      if (!activeProject) return;
+      if (e.key === 'Escape') closeModal();
+      if (e.key === 'ArrowRight') handleNext();
+      if (e.key === 'ArrowLeft') handlePrev();
+      
+      if (e.key === 'Tab') {
+        const focusableElements = modalRef.current?.querySelectorAll<HTMLElement>(
+          'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])'
+        );
+        
+        if (!focusableElements || focusableElements.length === 0) return;
+        
+        const focusableNodes = Array.from<HTMLElement>(focusableElements).filter(el => {
+          return !el.hasAttribute('disabled') && el.getAttribute('aria-hidden') !== 'true';
         });
-      }
-      if (e.key === 'ArrowLeft') {
-        setLightbox(prev => {
-          if (!prev) return prev;
-          const currentImages = projects[prev.projectIndex].images;
-          return { ...prev, imageIndex: (prev.imageIndex - 1 + currentImages.length) % currentImages.length };
-        });
+
+        if (focusableNodes.length === 0) return;
+
+        const first = focusableNodes[0];
+        const last = focusableNodes[focusableNodes.length - 1];
+        
+        if (!modalRef.current?.contains(document.activeElement)) {
+          e.preventDefault();
+          first.focus();
+          return;
+        }
+        
+        if (e.shiftKey && document.activeElement === first) {
+          e.preventDefault();
+          last.focus();
+        } else if (!e.shiftKey && document.activeElement === last) {
+          e.preventDefault();
+          first.focus();
+        }
       }
     };
     
-    window.addEventListener('keydown', handleKeyDown);
-    if (lightbox) {
+    document.addEventListener('keydown', handleKeyDown);
+    return () => document.removeEventListener('keydown', handleKeyDown);
+  }, [activeProject, handleNext, handlePrev, closeModal]);
+
+  useEffect(() => {
+    if (activeProject) {
       document.body.style.overflow = 'hidden';
-      setTimeout(() => closeBtnRef.current?.focus(), 100);
+      setTimeout(() => titleRef.current?.focus(), 100);
     } else {
-      document.body.style.overflow = '';
+      document.body.style.overflow = 'unset';
     }
-    
-    return () => {
-      window.removeEventListener('keydown', handleKeyDown);
-      document.body.style.overflow = '';
-    };
-  }, [lightbox]);
-
-  const containerVariants = {
-    hidden: { opacity: 0 },
-    visible: {
-      opacity: 1,
-      transition: {
-        staggerChildren: 0.15,
-        delayChildren: 0.1
-      }
-    }
-  };
-
-  const cardVariants = {
-    hidden: { opacity: 0, y: 40 },
-    visible: { 
-      opacity: 1, 
-      y: 0,
-      transition: { duration: 0.6, ease: "easeOut" }
-    }
-  };
-
-  const filteredProjects = projects.filter(project => {
-    const query = searchQuery.toLowerCase();
-    return (
-      project.title.toLowerCase().includes(query) ||
-      project.tag.toLowerCase().includes(query) ||
-      project.technologies.some(tech => tech.toLowerCase().includes(query))
-    );
-  });
+  }, [activeProject]);
 
   return (
-    <section ref={sectionRef} id="featured" className="relative py-32 px-6 sm:px-10 lg:px-20 border-t border-border-dim overflow-hidden">
-      <motion.div style={{ y: yDecor1 }} className="absolute -right-40 top-40 w-96 h-96 bg-accent/5 rounded-full blur-[100px] pointer-events-none" aria-hidden="true" />
-      <motion.div style={{ y: yDecor2 }} className="absolute -left-20 bottom-40 w-64 h-64 bg-foreground/5 rounded-full blur-[80px] pointer-events-none" aria-hidden="true" />
-
-      <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-16 gap-6">
-        <motion.h2
-          initial={{ opacity: 0, letterSpacing: "5px" }}
-          whileInView={{ opacity: 1, letterSpacing: "0px" }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.8 }}
-          className="text-4xl font-serif italic text-foreground m-0"
-        >
-          Featured Projects
-        </motion.h2>
+    <section ref={sectionRef} id="projects" className="relative py-32 px-6 sm:px-10 lg:px-20 bg-background overflow-hidden border-t border-white/5">
+      <div className="max-w-7xl mx-auto flex flex-col gap-16">
         
-        <motion.div 
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.8, delay: 0.2 }}
-          className="relative w-full md:w-72"
-        >
-          <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-            <Search className="h-5 w-5 text-muted" aria-hidden="true" />
+        {/* Section Heading */}
+        <div className="flex flex-col lg:flex-row lg:items-end justify-between gap-10">
+          <div className="max-w-2xl">
+            <motion.div 
+              initial={{ opacity: 0, scale: 0.9 }}
+              whileInView={{ opacity: 1, scale: 1 }}
+              className="inline-flex items-center gap-3 px-4 py-2 rounded-full border border-white/10 bg-white/5 backdrop-blur-md mb-8"
+            >
+              <div className="w-1.5 h-1.5 rounded-full bg-white animate-pulse" />
+              <span className="text-[11px] uppercase tracking-[0.2em] font-bold text-white">Recent Projects</span>
+            </motion.div>
+            <h2 className="text-5xl md:text-6xl font-display font-bold text-white tracking-tight leading-tight">
+              Recent <span className="text-white/40">Designs</span>
+            </h2>
+            <p className="text-muted text-lg mt-6 leading-relaxed">
+              Detailed exploration of design challenges and strategic solutions across graphic, web, and UI/UX projects.
+            </p>
           </div>
-          <input
-            type="text"
-            placeholder="Search projects..."
-            value={searchQuery}
-            onChange={(e) => setSearchQuery(e.target.value)}
-            className="block w-full pl-10 pr-3 py-2 border border-border-dim rounded-full bg-white/[0.02] text-foreground placeholder-muted focus:outline-none focus:ring-1 focus:ring-accent focus:border-accent transition-all"
-            aria-label="Search projects by title, tag, or technology"
-          />
-        </motion.div>
-      </div>
+          
+          <div className="flex flex-wrap gap-3">
+            {tags.map((tag) => (
+              <button
+                key={tag}
+                onClick={() => setSelectedTag(tag)}
+                aria-pressed={selectedTag === tag}
+                className={`px-6 py-2.5 rounded-full border text-[11px] uppercase font-bold tracking-[0.1em] transition-all duration-300 ${
+                  selectedTag === tag 
+                    ? 'bg-white border-white text-black' 
+                    : 'bg-white/5 border-white/10 text-white/50 hover:border-white/30 hover:text-white'
+                }`}
+              >
+                {tag}
+              </button>
+            ))}
+          </div>
+        </div>
 
-      {filteredProjects.length === 0 && !isLoading ? (
-        <motion.div 
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          className="text-center py-20"
-        >
-          <p className="text-muted text-lg">No projects found matching "{searchQuery}"</p>
-          <button 
-            onClick={() => setSearchQuery("")}
-            className="mt-4 text-accent hover:underline focus:outline-none"
-          >
-            Clear Search
-          </button>
-        </motion.div>
-      ) : (
-      <motion.ul 
-        variants={containerVariants}
-        initial="hidden"
-        whileInView="visible"
-        viewport={{ once: true, margin: "-100px" }}
-        className="grid md:grid-cols-2 lg:grid-cols-3 gap-8"
-      >
-        {isLoading
-          ? Array.from({ length: 3 }).map((_, index) => (
-              <motion.li key={`skeleton-${index}`} variants={cardVariants}>
-                <ProjectSkeleton />
-              </motion.li>
-            ))
-          : filteredProjects.map((project, index) => {
-            const originalIndex = projects.indexOf(project);
-            return (
-          <motion.li
-            key={originalIndex}
-            variants={cardVariants}
-            whileHover={{ 
-              scale: 1.02, 
-              y: -8
-            }}
-            className="p-0 bg-white/[0.02] border border-border-dim rounded-xl transition-all duration-500 flex flex-col justify-between group h-full relative overflow-hidden focus-within:ring-2 focus-within:ring-accent hover:shadow-2xl hover:shadow-accent/5 hover:border-accent/30"
-          >
-            {/* Image Container */}
-            <ProjectCarousel 
-              images={project.images} 
-              title={project.title} 
-              onImageClick={(imageIndex) => setLightbox({ projectIndex: originalIndex, imageIndex })} 
-            />
-
-            <div className="p-8 relative z-10 flex flex-col flex-grow">
-              <div className="flex justify-between items-start mb-6">
-                <span 
-                  className="text-[10px] bg-accent/10 border border-accent/20 px-3 py-1 rounded-full uppercase tracking-[0.2em] text-accent font-bold"
-                >
-                  {project.tag}
-                 </span>
-                 <ArrowRight size={18} className="text-muted group-hover:text-accent group-hover:translate-x-1 transition-all duration-300" aria-hidden="true" />
-              </div>
-              <h3 className="text-2xl font-serif italic text-foreground mb-2 group-hover:text-accent transition-colors duration-300">{project.title}</h3>
-              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 mb-4">
-                <div className="text-[11px] font-mono text-muted uppercase tracking-wider">
-                  {project.stack}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 sm:gap-10">
+          {filteredProjects.map((project, index) => (
+            <motion.div
+              key={index}
+              initial={{ opacity: 0, y: 30 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ delay: index * 0.1, duration: 0.8 }}
+              viewport={{ once: true }}
+              className="group cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/50 rounded-[2.5rem]"
+              role="button"
+              tabIndex={0}
+              aria-label={`View details for ${project.title}`}
+              ref={(el: HTMLDivElement | null) => { triggerRefs.current[project.title] = el; }}
+              onKeyDown={(e) => {
+                if (e.key === 'Enter' || e.key === ' ') {
+                  e.preventDefault();
+                  setActiveProject(project);
+                }
+              }}
+              onClick={() => setActiveProject(project)}
+            >
+              <div className="glass-card rounded-[2rem] p-2 sm:p-3 hover:-translate-y-2 hover:scale-[1.02] h-full flex flex-col group/inner">
+                <div className="relative aspect-[4/3] rounded-[1.5rem] overflow-hidden mb-6 bg-black/50">
+                  <img 
+                    src={project.images[0]} 
+                    alt={`${project.title} cover`}
+                    className="w-full h-full object-cover mix-blend-luminosity opacity-80 transition-all duration-700 group-hover:mix-blend-normal group-hover:opacity-100 group-hover:scale-110"
+                    loading="lazy"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+                  
+                  {/* Category icon badge */}
+                  <div className="absolute top-4 left-4 p-3 rounded-full bg-white/10 backdrop-blur-xl border border-white/20 transform -translate-y-4 opacity-0 group-hover:translate-y-0 group-hover:opacity-100 transition-all duration-500">
+                    <Palette size={16} className="text-white" />
+                  </div>
                 </div>
-                <div className="flex flex-wrap items-center gap-2">
-                  {project.completionDate && (
-                    <div className="flex items-center gap-1.5 text-[11px] font-mono text-muted/80 uppercase tracking-widest px-2 py-0.5 bg-white/5 rounded-full border border-border-dim inline-flex w-fit">
-                      <Calendar size={12} aria-hidden="true" />
+
+                <div className="px-3 pb-3 flex-grow flex flex-col gap-4">
+                  <div className="space-y-2">
+                    <div className="flex justify-between items-center text-[11px] uppercase tracking-[0.2em] font-semibold text-white/40">
+                      <span>{project.tag}</span>
                       <span>{project.completionDate}</span>
                     </div>
-                  )}
-                  {project.timeline && (
-                    <div className="flex items-center gap-1.5 text-[11px] font-mono text-muted/80 uppercase tracking-widest px-2 py-0.5 bg-white/5 rounded-full border border-border-dim inline-flex w-fit">
-                      <Clock size={12} aria-hidden="true" />
-                      <span>{project.timeline}</span>
+                    <h3 className="text-2xl sm:text-3xl font-display font-medium text-white group-hover:text-white transition-colors">{project.title}</h3>
+                  </div>
+
+                  <div className="mt-auto pt-5 flex justify-between items-center border-t border-white/10">
+                    <span className="text-xs uppercase tracking-widest font-semibold text-white/50 group-hover:text-white transition-colors flex items-center gap-2">
+                      View Project
+                    </span>
+                    <div className="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center shrink-0 group-hover:bg-white group-hover:text-black transition-all duration-300">
+                      <ArrowRight size={18} />
                     </div>
-                  )}
+                  </div>
                 </div>
-              </div>
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-3 my-6">
-                <div className="bg-white/[0.03] p-4 rounded-lg">
-                  <h4 className="text-[10px] uppercase font-bold tracking-widest text-accent mb-1">Challenge</h4>
-                  <p className="text-[11px] text-muted leading-relaxed">{project.challenge}</p>
-                </div>
-                <div className="bg-white/[0.03] p-4 rounded-lg">
-                  <h4 className="text-[10px] uppercase font-bold tracking-widest text-accent mb-1">Solution</h4>
-                  <p className="text-[11px] text-muted leading-relaxed">{project.solution}</p>
-                </div>
-              </div>
-
-              <div className="flex flex-wrap gap-2 mb-6">
-                {project.technologies.map((tech, techIndex) => (
-                  <span 
-                    key={techIndex} 
-                    className="text-[9px] uppercase font-bold tracking-widest px-2 py-1 bg-white/5 border border-white/10 text-muted rounded-sm"
-                  >
-                    {tech}
-                  </span>
-                ))}
-              </div>
-              
-              <div className="space-y-4 mb-6">
-                <div className="border-l-2 border-accent/20 pl-4">
-                  <p className="text-[10px] uppercase tracking-widest text-muted font-bold mb-1">Challenge</p>
-                  <p className="text-muted text-xs leading-relaxed">{project.challenge}</p>
-                </div>
-                <div className="border-l-2 border-accent/60 pl-4">
-                  <p className="text-[10px] uppercase tracking-widest text-accent font-bold mb-1">Solution</p>
-                  <p className="text-foreground/80 text-xs leading-relaxed">{project.solution}</p>
-                </div>
-              </div>
-
-              {project.testimonial && (
-                <div className="mb-6 p-4 bg-accent/5 border border-accent/10 rounded-lg">
-                  <p className="text-xs italic text-foreground/90 font-serif leading-relaxed mb-2">"{project.testimonial.quote}"</p>
-                  <p className="text-[10px] uppercase tracking-widest text-accent font-bold">— {project.testimonial.author}</p>
-                </div>
-              )}
-
-              <div className="mt-auto pt-6 flex items-center gap-4 flex-wrap gap-y-4 border-t border-border-dim/50">
-                <a 
-                  href={project.behanceUrl}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="flex-grow text-[11px] font-bold uppercase tracking-widest text-muted hover:text-accent transition-colors flex items-center gap-2 group/link focus:outline-none focus:ring-2 focus:ring-accent focus:ring-offset-2 focus:ring-offset-background rounded-sm py-1"
-                  aria-label={`View ${project.title} portfolio on Behance`}
-                >
-                  <Palette size={14} className="group-hover/link:scale-110 transition-transform text-accent/70" aria-hidden="true" />
-                  View Portfolio <ExternalLink size={14} className="opacity-0 group-hover/link:opacity-100 transition-all -translate-x-2 group-hover/link:translate-x-0" aria-hidden="true" />
-                </a>
-                
-                <div className="flex items-center gap-3 relative">
-                  <motion.a
-                    whileHover={{ scale: 1.1 }}
-                    whileTap={{ scale: 0.9, y: 5 }}
-                    href={`https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(project.behanceUrl)}`}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    onClick={() => {
-                      setSharedProject({ index: originalIndex, social: 'LinkedIn' });
-                      setTimeout(() => setSharedProject(null), 3000);
-                    }}
-                    className="text-muted hover:text-[#0077b5] transition-colors focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-background focus:ring-[#0077b5] rounded-full p-1 -m-1 inline-flex items-center justify-center transform-gpu"
-                    aria-label={`Share ${project.title} on LinkedIn`}
-                  >
-                    <Linkedin size={16} aria-hidden="true" />
-                  </motion.a>
-                  <motion.a
-                    whileHover={{ scale: 1.1 }}
-                    whileTap={{ scale: 0.9, y: 5 }}
-                    href={`https://www.tiktok.com/@yourusername`}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    onClick={() => {
-                      setSharedProject({ index: originalIndex, social: 'TikTok' });
-                      setTimeout(() => setSharedProject(null), 3000);
-                    }}
-                    className="text-muted hover:text-foreground transition-colors focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-background focus:ring-foreground rounded-full p-1 -m-1 inline-flex items-center justify-center transform-gpu"
-                    aria-label={`Share ${project.title} on TikTok`}
-                  >
-                    <TiktokIcon size={16} aria-hidden="true" />
-                  </motion.a>
-
-                  <motion.a
-                    whileHover={{ scale: 1.1 }}
-                    whileTap={{ scale: 0.9, y: 5 }}
-                    href={`https://www.upwork.com/freelancers/~01210004bc57b3b0ba`}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    onClick={() => {
-                      setSharedProject({ index: originalIndex, social: 'Upwork' });
-                      setTimeout(() => setSharedProject(null), 3000);
-                    }}
-                    className="text-muted hover:text-[#14a800] transition-colors focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-background focus:ring-[#14a800] rounded-full p-1 -m-1 inline-flex items-center justify-center transform-gpu"
-                    aria-label={`View my profile on Upwork`}
-                  >
-                    <UpworkIcon size={16} aria-hidden="true" />
-                  </motion.a>
-                  
-                  <motion.a
-                    whileHover={{ scale: 1.1 }}
-                    whileTap={{ scale: 0.9, y: 5 }}
-                    href={`https://www.fiverr.com/users/allahnawaz744/portfolio`}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    onClick={() => {
-                      setSharedProject({ index: originalIndex, social: 'Fiverr' });
-                      setTimeout(() => setSharedProject(null), 3000);
-                    }}
-                    className="text-muted hover:text-[#1dbf73] transition-colors focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-background focus:ring-[#1dbf73] rounded-full p-1 -m-1 inline-flex items-center justify-center transform-gpu"
-                    aria-label={`View my profile on Fiverr`}
-                  >
-                    <FiverrIcon size={16} aria-hidden="true" />
-                  </motion.a>
-                  
-                  <AnimatePresence>
-                    {sharedProject?.index === originalIndex && (
-                      <motion.div
-                        initial={{ opacity: 0, y: 5, scale: 0.9 }}
-                        animate={{ opacity: 1, y: -30, scale: 1 }}
-                        exit={{ opacity: 0, y: -20, scale: 0.9 }}
-                        className="absolute right-0 bottom-full mb-2 bg-foreground text-background text-[9px] uppercase tracking-widest font-bold px-2.5 py-1.5 rounded-md shadow-xl border border-white/10 whitespace-nowrap pointer-events-none"
-                      >
-                        Opening {sharedProject.social}...
-                      </motion.div>
-                    )}
-                  </AnimatePresence>
-                </div>
-              </div>
-            </div>
-
-            {/* Subtle gradient glow on hover */}
-            <div className="absolute inset-0 bg-gradient-to-br from-accent/5 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-700 pointer-events-none" />
-          </motion.li>
-            );
-        })}
-      </motion.ul>
-      )}
-
-      <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        viewport={{ once: true }}
-        className="mt-24 flex flex-col items-center gap-6"
-      >
-        <p className="text-muted text-sm italic font-serif">Curious to see more of my design journey?</p>
-        <motion.a 
-          whileHover={{ scale: 1.05 }}
-          whileTap={{ scale: 0.95, y: 5 }}
-          href="https://behance.net/allahnawaz175" 
-          target="_blank" 
-          rel="noopener noreferrer"
-          className="group relative inline-flex items-center gap-3 px-12 py-5 bg-foreground text-background rounded-full font-bold transition-all shadow-xl shadow-black/20 focus:outline-none focus:ring-2 focus:ring-accent focus:ring-offset-2 focus:ring-offset-background transform-gpu"
-        >
-          Explore Full Portfolio on Behance
-          <Palette size={20} className="group-hover:rotate-12 transition-transform" aria-hidden="true" />
-        </motion.a>
-      </motion.div>
-
-      {/* Lightbox Overlay */}
-      <AnimatePresence>
-        {lightbox && (
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            className="fixed inset-0 z-[100] flex items-center justify-center bg-background/95 backdrop-blur-md p-4 sm:p-10"
-            role="dialog"
-            aria-modal="true"
-            aria-label="Image Lightbox"
-            onClick={() => setLightbox(null)}
-          >
-            <motion.button
-              ref={closeBtnRef}
-              whileTap={{ scale: 0.9, y: 5 }}
-              onClick={() => setLightbox(null)}
-              className="absolute top-6 right-6 p-3 bg-white/10 hover:bg-accent text-white hover:text-black rounded-full backdrop-blur-md transition-all focus:outline-none focus:ring-2 focus:ring-accent focus:ring-offset-2 focus:ring-offset-background z-50 transform-gpu"
-              aria-label="Close Lightbox"
-            >
-              <X size={24} aria-hidden="true" />
-            </motion.button>
-            
-            {projects[lightbox.projectIndex].images.length > 1 && (
-              <>
-                <motion.button
-                  whileTap={{ scale: 0.9, y: 5 }}
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    setLightbox(prev => {
-                      if (!prev) return prev;
-                      const currentImages = projects[prev.projectIndex].images;
-                      return { ...prev, imageIndex: (prev.imageIndex - 1 + currentImages.length) % currentImages.length };
-                    });
-                  }}
-                  className="absolute left-4 sm:left-10 top-1/2 -translate-y-1/2 p-3 bg-white/10 hover:bg-accent text-white hover:text-black rounded-full backdrop-blur-md transition-all focus:outline-none focus:ring-2 focus:ring-accent focus:ring-offset-2 focus:ring-offset-background z-50 group transform-gpu"
-                  aria-label="Previous Image"
-                >
-                  <ChevronLeft size={32} className="group-hover:-translate-x-1 transition-transform" aria-hidden="true" />
-                </motion.button>
-                <motion.button
-                  whileTap={{ scale: 0.9, y: 5 }}
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    setLightbox(prev => {
-                      if (!prev) return prev;
-                      const currentImages = projects[prev.projectIndex].images;
-                      return { ...prev, imageIndex: (prev.imageIndex + 1) % currentImages.length };
-                    });
-                  }}
-                  className="absolute right-4 sm:right-10 top-1/2 -translate-y-1/2 p-3 bg-white/10 hover:bg-accent text-white hover:text-black rounded-full backdrop-blur-md transition-all focus:outline-none focus:ring-2 focus:ring-accent focus:ring-offset-2 focus:ring-offset-background z-50 group transform-gpu"
-                  aria-label="Next Image"
-                >
-                  <ChevronRight size={32} className="group-hover:translate-x-1 transition-transform" aria-hidden="true" />
-                </motion.button>
-              </>
-            )}
-
-            <motion.div
-              key={`${lightbox.projectIndex}-${lightbox.imageIndex}`}
-              initial={{ opacity: 0, scale: 0.95 }}
-              animate={{ opacity: 1, scale: 1 }}
-              exit={{ opacity: 0, scale: 0.95 }}
-              transition={{ duration: 0.3 }}
-              className="relative max-w-6xl max-h-[85vh] w-full aspect-[16/10] flex items-center justify-center overflow-hidden rounded-xl bg-black/40 shadow-2xl border border-white/10"
-              onClick={(e) => e.stopPropagation()}
-            >
-              <img
-                src={projects[lightbox.projectIndex].images[lightbox.imageIndex]}
-                alt={`${projects[lightbox.projectIndex].title} mockup ${lightbox.imageIndex + 1} of ${projects[lightbox.projectIndex].images.length}`}
-                className="w-full h-full object-contain"
-                loading="lazy"
-                decoding="async"
-              />
-              <div className="absolute bottom-6 left-1/2 -translate-x-1/2 bg-black/60 backdrop-blur-md px-4 py-2 rounded-full text-white text-xs tracking-widest uppercase font-mono border border-white/10">
-                {lightbox.imageIndex + 1} / {projects[lightbox.projectIndex].images.length}
               </div>
             </motion.div>
-          </motion.div>
+          ))}
+        </div>
+
+        <div className="mt-16 flex justify-center">
+          <motion.a 
+            whileHover={{ scale: 1.05 }}
+            whileTap={{ scale: 0.95 }}
+            href="https://behance.net/allahnawaz175"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="px-10 py-5 bg-white text-black rounded-full font-bold text-sm flex items-center gap-3 hover:bg-white/90 transition-all shadow-xl shadow-white/5 group focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/50"
+          >
+            See All Projects
+            <ArrowRight size={18} className="group-hover:translate-x-1 transition-transform" />
+          </motion.a>
+        </div>
+      </div>
+
+      {/* Project Detail Modal */}
+      <AnimatePresence>
+        {activeProject && (
+          <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 sm:p-10">
+            <motion.div 
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              onClick={closeModal}
+              className="absolute inset-0 bg-black/80 backdrop-blur-md cursor-pointer"
+              aria-hidden="true"
+            />
+            
+            <motion.div
+              ref={modalRef}
+              role="dialog"
+              aria-modal="true"
+              aria-labelledby={`modal-title-${activeProject.title.replace(/\s+/g, '-')}`}
+              aria-describedby="modal-description"
+              layoutId={`project-${activeProject.title}`}
+              initial={{ opacity: 0, scale: 0.9, y: 20 }}
+              animate={{ opacity: 1, scale: 1, y: 0 }}
+              exit={{ opacity: 0, scale: 0.9, y: 20 }}
+              className="relative w-full max-w-5xl max-h-[90vh] glass-nav rounded-[2.5rem] border border-white/10 overflow-hidden flex flex-col lg:flex-row shadow-2xl shadow-black/50 bg-background/95"
+            >
+              <div className="absolute top-4 right-4 z-10 flex gap-2">
+                <button 
+                  onClick={handlePrev}
+                  aria-label="Previous project"
+                  className="w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-black/60 border border-white/20 flex items-center justify-center hover:bg-white hover:text-black transition-all text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/50"
+                >
+                  <ChevronLeft size={20} aria-hidden="true" />
+                </button>
+                <button 
+                  onClick={handleNext}
+                  aria-label="Next project"
+                  className="w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-black/60 border border-white/20 flex items-center justify-center hover:bg-white hover:text-black transition-all text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/50"
+                >
+                  <ChevronRight size={20} aria-hidden="true" />
+                </button>
+                <button 
+                  ref={closeBtnRef}
+                  onClick={closeModal}
+                  aria-label="Close project details"
+                  className="w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-black/60 border border-white/20 flex items-center justify-center hover:bg-white hover:text-black transition-all text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/50"
+                >
+                  <X size={20} aria-hidden="true" />
+                </button>
+              </div>
+
+              {/* Image side */}
+              <div className="w-full lg:w-1/2 overflow-y-auto bg-black/20 custom-scrollbar">
+                <motion.div 
+                  key={activeProject.title + "-images"}
+                  initial={{ opacity: 0, x: -20 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
+                  className="flex flex-col gap-6 p-6 lg:p-12 lg:pt-24"
+                >
+                  {activeProject.images.map((img, i) => (
+                    <motion.div 
+                      key={i} 
+                      initial={{ opacity: 0, y: 20 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      transition={{ delay: i * 0.1 + 0.2, duration: 0.8 }}
+                      className="relative aspect-[4/3] rounded-3xl overflow-hidden shadow-2xl border border-white/5"
+                    >
+                      <img 
+                        src={img} 
+                        alt={`${activeProject.title} screenshot ${i + 1}`}
+                        className="w-full h-full object-cover transition-all duration-700 hover:scale-105"
+                        loading="lazy"
+                      />
+                    </motion.div>
+                  ))}
+                </motion.div>
+              </div>
+
+              {/* Info side */}
+              <div className="w-full lg:w-1/2 p-8 sm:p-12 lg:p-16 overflow-y-auto pt-24 lg:pt-24">
+                <motion.div 
+                  key={activeProject.title + "-content"}
+                  initial="hidden"
+                  animate="visible"
+                  variants={{
+                    hidden: { opacity: 0 },
+                    visible: {
+                      opacity: 1,
+                      transition: {
+                        staggerChildren: 0.08,
+                        delayChildren: 0.1
+                      }
+                    }
+                  }}
+                  className="space-y-12"
+                >
+                  <motion.div variants={{ hidden: { opacity: 0, y: 20 }, visible: { opacity: 1, y: 0 } }} className="space-y-6">
+                    <div className="flex items-center gap-4 text-[11px] uppercase tracking-[0.3em] font-bold text-white/40">
+                      <span className="px-3 py-1 rounded bg-white/5 border border-white/5">{activeProject.tag}</span>
+                      <div className="w-1.5 h-1.5 rounded-full bg-white/10" />
+                      <span>{activeProject.completionDate}</span>
+                    </div>
+                    <h2 
+                      ref={titleRef}
+                      tabIndex={-1}
+                      id={`modal-title-${activeProject.title.replace(/\s+/g, '-')}`} 
+                      className="text-4xl sm:text-5xl lg:text-6xl font-display font-bold text-white leading-tight tracking-tighter focus:outline-none"
+                    >
+                      {activeProject.title}
+                    </h2>
+                  </motion.div>
+
+                  <motion.div variants={{ hidden: { opacity: 0, y: 20 }, visible: { opacity: 1, y: 0 } }} className="grid grid-cols-2 gap-8 p-8 rounded-[2rem] bg-white/[0.03] border border-white/5 backdrop-blur-sm">
+                    <div className="space-y-2">
+                      <span className="text-[10px] uppercase font-bold tracking-widest text-white/30 flex items-center gap-2">
+                        <Clock size={14} aria-hidden="true" className="text-gray-400" />
+                        Timeline
+                      </span>
+                      <p className="text-base font-medium text-white">{activeProject.timeline}</p>
+                    </div>
+                    <div className="space-y-2">
+                       <span className="text-[10px] uppercase font-bold tracking-widest text-white/30 flex items-center gap-2">
+                        <Globe size={14} aria-hidden="true" className="text-gray-400" />
+                        Expertise
+                      </span>
+                      <p className="text-sm font-medium text-white line-clamp-1">{activeProject.technicalExpertise}</p>
+                    </div>
+                  </motion.div>
+
+                  <div className="space-y-10">
+                    <motion.div variants={{ hidden: { opacity: 0, y: 20 }, visible: { opacity: 1, y: 0 } }} className="space-y-4" id="modal-description">
+                      <h4 className="text-[11px] font-display font-bold uppercase tracking-[0.25em] text-white/30">The Concept</h4>
+                      <p className="text-2xl font-serif italic text-white/95 leading-relaxed">
+                        "{activeProject.elevatorPitch}"
+                      </p>
+                    </motion.div>
+
+                    <div className="grid grid-cols-1 gap-12">
+                      <motion.div variants={{ hidden: { opacity: 0, y: 20 }, visible: { opacity: 1, y: 0 } }} className="space-y-4">
+                        <h4 className="text-[11px] font-display font-bold uppercase tracking-[0.25em] text-white/30">The Challenge</h4>
+                        <p className="text-white/70 leading-relaxed text-[15px] font-light">
+                          {activeProject.problemStatement}
+                        </p>
+                      </motion.div>
+
+                      <motion.div variants={{ hidden: { opacity: 0, y: 20 }, visible: { opacity: 1, y: 0 } }} className="space-y-4">
+                        <h4 className="text-[11px] font-display font-bold uppercase tracking-[0.25em] text-white/30">Strategic Solution</h4>
+                        <p className="text-white/70 leading-relaxed text-[15px] font-light">
+                          {activeProject.strategicSolution}
+                        </p>
+                      </motion.div>
+                    </div>
+
+                    <motion.div variants={{ hidden: { opacity: 0, y: 20 }, visible: { opacity: 1, y: 0 } }} className="space-y-6">
+                      <h4 className="text-[11px] font-display font-bold uppercase tracking-[0.25em] text-white/30">UX Architecture</h4>
+                      <ul className="grid grid-cols-1 gap-6">
+                        <li className="flex gap-5 group/item">
+                          <div className="w-12 h-12 rounded-2xl bg-white/5 border border-white/5 flex items-center justify-center shrink-0 group-hover/item:bg-white/10 transition-colors">
+                             <div className="w-2 h-2 rounded-full bg-white/40" />
+                          </div>
+                          <div>
+                            <span className="font-bold text-white/90 block mb-1 text-sm">User-Centricity</span>
+                            <span className="text-white/50 text-[13px] font-light leading-relaxed block">{activeProject.uxPillars?.userCentricity}</span>
+                          </div>
+                        </li>
+                        <li className="flex gap-5 group/item">
+                          <div className="w-12 h-12 rounded-2xl bg-white/5 border border-white/5 flex items-center justify-center shrink-0 group-hover/item:bg-white/10 transition-colors">
+                             <div className="w-2 h-2 rounded-full bg-white/40" />
+                          </div>
+                          <div>
+                            <span className="font-bold text-white/90 block mb-1 text-sm">Visual Impact</span>
+                            <span className="text-white/50 text-[13px] font-light leading-relaxed block">{activeProject.uxPillars?.visualImpact}</span>
+                          </div>
+                        </li>
+                        <li className="flex gap-5 group/item">
+                          <div className="w-12 h-12 rounded-2xl bg-white/5 border border-white/5 flex items-center justify-center shrink-0 group-hover/item:bg-white/10 transition-colors">
+                             <div className="w-2 h-2 rounded-full bg-white/40" />
+                          </div>
+                          <div>
+                            <span className="font-bold text-white/90 block mb-1 text-sm">Scalability</span>
+                            <span className="text-white/50 text-[13px] font-light leading-relaxed block">{activeProject.uxPillars?.scalability}</span>
+                          </div>
+                        </li>
+                      </ul>
+                    </motion.div>
+
+                    <motion.div variants={{ hidden: { opacity: 0, y: 20 }, visible: { opacity: 1, y: 0 } }} className="space-y-4 p-8 rounded-[2rem] bg-white/[0.04] border border-white/10">
+                      <h4 className="text-[11px] font-display font-bold uppercase tracking-[0.25em] text-white/30">The Final Outcome</h4>
+                      <p className="text-white font-medium text-lg leading-relaxed">
+                        {activeProject.result}
+                      </p>
+                    </motion.div>
+                  </div>
+
+                  <div className="h-px w-full bg-white/5" role="presentation" />
+
+                  <motion.div variants={{ hidden: { opacity: 0, scale: 0.95 }, visible: { opacity: 1, scale: 1 } }} className="flex flex-col sm:flex-row gap-4">
+                    <a 
+                      href={activeProject.behanceUrl}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="flex-2 py-5 bg-white text-black rounded-full font-bold text-[13px] uppercase tracking-widest flex items-center justify-center gap-3 hover:bg-[#e5e5e5] transition-all transform hover:scale-[1.02] active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/50"
+                    >
+                      Explore on Behance
+                      <ExternalLink size={16} aria-hidden="true" />
+                    </a>
+                    <button 
+                      onClick={closeModal}
+                      className="flex-1 py-5 rounded-full border border-white/10 font-bold text-[13px] uppercase tracking-widest hover:bg-white/5 transition-all text-white/70 hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/50"
+                    >
+                      Return
+                    </button>
+                  </motion.div>
+                </motion.div>
+              </div>
+            </motion.div>
+          </div>
         )}
       </AnimatePresence>
     </section>
   );
 }
+

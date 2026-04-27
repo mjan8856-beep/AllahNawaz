@@ -25,11 +25,11 @@ export default function FAQ() {
       <div className="max-w-4xl mx-auto">
         <motion.h2 
           id="faq-title"
-          initial={{ opacity: 0, letterSpacing: "5px" }}
-          whileInView={{ opacity: 1, letterSpacing: "0px" }}
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.8 }}
-          className="text-4xl font-serif italic text-foreground mb-16 text-center"
+          className="text-4xl md:text-5xl font-display font-bold text-gradient mb-16 text-center tracking-tighter"
         >
           Frequently Asked Questions
         </motion.h2>
@@ -49,7 +49,7 @@ export default function FAQ() {
                 aria-controls={`faq-answer-${i}`}
                 className="w-full p-6 text-left flex justify-between items-center hover:bg-white/[0.03] transition-colors focus:outline-none focus:ring-2 focus:ring-accent focus:ring-inset"
               >
-                <span className="text-foreground font-serif italic text-lg">{faq.question}</span>
+                <span className="text-white font-display font-bold text-lg tracking-tight transition-colors">{faq.question}</span>
                 {openIndex === i ? <Minus size={20} className="text-accent" aria-hidden="true" /> : <Plus size={20} className="text-muted" aria-hidden="true" />}
               </button>
               <AnimatePresence>

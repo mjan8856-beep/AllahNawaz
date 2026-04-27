@@ -1,0 +1,34 @@
+{
+  "entities": {
+    "Skill": {
+      "title": "Skill",
+      "description": "A specific skill that can be endorsed.",
+      "type": "object",
+      "properties": {
+        "name": { "type": "string" },
+        "endorsementsCount": { "type": "integer" }
+      },
+      "required": ["name", "endorsementsCount"]
+    },
+    "Voter": {
+      "title": "Voter",
+      "description": "A user who has endorsed a skill.",
+      "type": "object",
+      "properties": {
+        "userId": { "type": "string" },
+        "timestamp": { "type": "string", "format": "date-time" }
+      },
+      "required": ["userId", "timestamp"]
+    }
+  },
+  "firestore": {
+    "/skills/{skillId}": {
+      "schema": "Skill",
+      "description": "Collection of skills with endorsement counts."
+    },
+    "/skills/{skillId}/voters/{userId}": {
+      "schema": "Voter",
+      "description": "Subcollection to track unique endorsements per user."
+    }
+  }
+}

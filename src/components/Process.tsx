@@ -1,108 +1,102 @@
 import { motion } from 'motion/react';
-import { Compass, Route, LayoutTemplate, Sparkles, Rocket } from 'lucide-react';
+import { MessageSquare, ClipboardList, Zap, Rocket, CheckCircle2 } from 'lucide-react';
 
 const steps = [
   {
-    title: "Insight & Strategy",
-    description: "Deep-diving into user needs and business goals to build a rock-solid product foundation.",
-    icon: Compass,
-    color: "from-blue-500/20 to-cyan-500/20"
+    title: "Let's Get In Touch",
+    description: "Start by reaching out through our contact page. Fill out the form or book a call to discuss your project, goals, and ideas.",
+    icon: MessageSquare,
   },
   {
-    title: "User Flow Optimization",
-    description: "Architecting logical journeys that lead users to success with zero friction.",
-    icon: Route,
-    color: "from-purple-500/20 to-pink-500/20"
+    title: "Grab Your Designs",
+    description: "Tell me your unique vision, and I’ll create stunning, functional designs that perfectly align with your goals",
+    icon: ClipboardList,
   },
   {
-    title: "Structure & Hierarchy",
-    description: "Defining the core product logic through wireframes that prioritize clarity over clutter.",
-    icon: LayoutTemplate,
-    color: "from-orange-500/20 to-amber-500/20"
+    title: "Kickstart Development",
+    description: "I expertly transform your designs into a powerful, scalable solution, fully ready to launch",
+    icon: Zap,
   },
   {
-    title: "Visual Fidelity",
-    description: "Crafting beautiful, modern interfaces wrapped in scalable design systems.",
-    icon: Sparkles,
-    color: "from-indigo-500/20 to-blue-500/20"
-  },
-  {
-    title: "Launch & Refine",
-    description: "Validating through feedback and data to ensure the final product hits every KPI.",
+    title: "And Hand Over",
+    description: "Receive a fully tested, polished, and high-quality product tailored to your needs with ongoing support",
     icon: Rocket,
-    color: "from-emerald-500/20 to-teal-500/20"
   }
 ];
 
 export default function Process() {
   return (
-    <section id="process" aria-labelledby="process-title" className="py-24 px-6 sm:px-10 lg:px-20 border-t border-border-dim bg-background relative overflow-hidden">
-      <div className="max-w-7xl mx-auto relative z-10">
+    <section id="process" className="py-32 px-6 sm:px-10 lg:px-20 bg-background flex justify-center">
+      <div className="max-w-7xl w-full">
         <motion.div
-           initial={{ opacity: 0, y: 30 }}
+           initial={{ opacity: 0, y: 20 }}
            whileInView={{ opacity: 1, y: 0 }}
-           viewport={{ once: true }}
-           transition={{ duration: 0.8 }}
-           className="mb-20 text-center lg:text-left"
+           className="mb-24 text-center"
         >
-          <div className="flex items-center justify-center lg:justify-start gap-4 mb-4">
-             <h2 
-               id="process-title"
-               className="text-[10px] sm:text-xs text-accent uppercase tracking-widest font-bold"
-             >
-               My Process
-             </h2>
-             <div className="h-[1px] bg-border-dim w-12 sm:w-24 lg:w-48" />
+          <div className="inline-flex items-center gap-3 px-4 py-2 rounded-full border border-white/10 bg-white/5 backdrop-blur-md mb-8">
+             <div className="w-1.5 h-1.5 rounded-full bg-white animate-pulse" />
+             <span className="text-[11px] uppercase tracking-[0.2em] font-bold text-white">How it works</span>
           </div>
-          <p className="text-3xl md:text-5xl font-serif italic text-foreground max-w-2xl mx-auto lg:mx-0">
-            How I turn complex problems into elegant solutions.
-          </p>
+          <h2 className="text-5xl md:text-6xl font-display font-bold text-white tracking-tight leading-tight">
+            Process <span className="text-white/40">Is Everything</span>
+          </h2>
+          <p className="text-muted mt-6 max-w-xl mx-auto text-lg leading-relaxed">Simple, streamlined process is what get's you results</p>
         </motion.div>
 
-        <div className="grid md:grid-cols-2 lg:grid-cols-5 gap-y-16 gap-x-8 relative">
-          {/* Background decorative connector line */}
-          <div className="absolute top-[52px] left-8 right-8 h-[1px] bg-border-dim hidden lg:block border-dashed border-t border-border-dim" />
-
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 relative">
           {steps.map((step, index) => (
             <motion.div
               key={index}
-              initial={{ opacity: 0, y: 40 }}
+              initial={{ opacity: 0, y: 30 }}
               whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, margin: "-100px" }}
-              transition={{ delay: index * 0.15, duration: 0.8, ease: "easeOut" }}
-              className="group relative"
+              transition={{ delay: index * 0.1, duration: 0.8 }}
+              viewport={{ once: true }}
+              className="glass-card p-10 rounded-[2rem] relative group hover:bg-white/[0.06] transition-all duration-500 overflow-hidden"
             >
-              <div className="flex flex-col items-center lg:items-start relative z-10 text-center lg:text-left">
-                <div className="flex items-center gap-4 w-full mb-6 relative">
-                   <div className="hidden lg:block absolute top-1/2 -right-8 w-8 h-[1px] bg-accent/20 scale-x-0 group-hover:scale-x-100 transition-transform origin-left duration-500" />
-                   
-                   <motion.div 
-                     className="relative w-14 h-14 rounded-2xl bg-white/[0.02] border border-border-dim flex items-center justify-center overflow-hidden mx-auto lg:mx-0 group-hover:border-accent/40 shadow-lg transition-all duration-500"
-                     whileHover={{ y: -5, scale: 1.05 }}
-                   >
-                     <div className={`absolute inset-0 bg-gradient-to-br ${step.color} opacity-0 group-hover:opacity-100 transition-opacity duration-500 blur-md`} />
-                     <div className={`absolute inset-0 bg-gradient-to-br ${step.color} opacity-0 group-hover:opacity-20 transition-opacity duration-500`} />
-                     
-                     <motion.div
-                       animate={{ y: [0, -2, 0] }}
-                       transition={{ duration: 3, repeat: Infinity, ease: "easeInOut", delay: index * 0.2 }}
-                       className="relative z-10 text-muted group-hover:text-foreground transition-colors duration-300"
-                     >
-                       <step.icon size={22} strokeWidth={1.5} aria-hidden="true" />
-                     </motion.div>
-                   </motion.div>
+              {/* Step number at top right within the card */}
+              <div className="absolute top-8 right-8 px-3 py-1 rounded-full bg-white/5 border border-white/10 text-xs font-bold text-white/40 group-hover:text-white transition-colors">
+                {index + 1}
+              </div>
+              
+              <div className="w-14 h-14 rounded-2xl bg-white/5 border border-white/10 flex items-center justify-center mb-8 group-hover:bg-white group-hover:text-black transition-all duration-500">
+                <step.icon size={24} className="group-hover:scale-110 transition-transform duration-500" />
+              </div>
+              
+              <h3 className="text-xl font-display font-bold text-white mb-4">{step.title}</h3>
+              <p className="text-muted text-sm leading-relaxed mb-10">{step.description}</p>
+
+              <div className="h-px w-full bg-white/10 mb-6" />
+              
+              <div className="flex items-center gap-3">
+                <div className="px-3 py-1 rounded-full glass-card border-white/5 text-[10px] font-bold text-muted uppercase tracking-widest">
+                  Step {index + 1}
                 </div>
-                
-                <div className="inline-flex items-center gap-2 mb-4 px-3 py-1 rounded-full bg-white/5 border border-border-dim group-hover:border-accent/30 transition-colors">
-                  <span className="text-[10px] text-accent font-mono uppercase tracking-widest font-bold">Phase 0{index + 1}</span>
-                </div>
-                
-                <h3 className="text-xl font-serif italic text-foreground mb-3 group-hover:text-accent transition-colors duration-300">{step.title}</h3>
-                <p className="text-muted text-sm leading-relaxed">{step.description}</p>
               </div>
             </motion.div>
           ))}
         </div>
+
+        <motion.div 
+          initial={{ opacity: 0, scale: 0.95 }}
+          whileInView={{ opacity: 1, scale: 1 }}
+          viewport={{ once: true }}
+          className="mt-20 flex flex-col lg:flex-row items-center justify-between glass-card p-8 sm:p-10 rounded-[2.5rem] border-white/5 gap-10"
+        >
+          <div className="flex flex-col sm:flex-row items-start sm:items-center gap-6">
+            <div className="w-14 h-14 rounded-full bg-white/5 flex items-center justify-center border border-white/10 shrink-0">
+               <CheckCircle2 size={24} className="text-white" />
+            </div>
+            <div>
+              <p className="text-xl font-display font-bold text-white">I am with you in every step</p>
+              <p className="text-sm text-muted mt-1 leading-relaxed">Alongside you at each step for a seamless and collaborative experience</p>
+            </div>
+          </div>
+
+          <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-4 w-full lg:w-auto">
+             <button className="px-8 py-4 rounded-full glass-card border-white/5 text-sm font-bold hover:bg-white/5 transition-all text-center">See All Projects</button>
+             <button className="px-8 py-4 rounded-full bg-white text-black text-sm font-bold hover:bg-white/90 transition-all text-center">Contact Now</button>
+          </div>
+        </motion.div>
       </div>
     </section>
   );

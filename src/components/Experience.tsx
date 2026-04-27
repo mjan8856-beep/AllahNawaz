@@ -61,11 +61,8 @@ export default function Experience() {
           </p>
         </motion.div>
 
-        <div className="relative">
-          {/* Vertical line connector */}
-          <div className="absolute left-[27px] top-4 bottom-4 w-px bg-border-dim/50 hidden md:block" />
-
-          <div className="space-y-12">
+        <div className="relative mt-12 sm:mt-20">
+          <div className="space-y-0">
             {experiences.map((exp, index) => (
               <motion.div 
                 key={exp.id}
@@ -73,34 +70,25 @@ export default function Experience() {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ duration: 0.8, delay: index * 0.1 }}
-                className="relative flex flex-col md:flex-row gap-6 md:gap-10 group"
+                className="group border-t border-border-dim py-10 md:py-16 first:border-0 grid grid-cols-1 md:grid-cols-12 gap-6 md:gap-10 hover:bg-white/[0.01] transition-colors"
               >
-                {/* Timeline node */}
-                <div className="hidden md:flex flex-col items-center mt-1 z-10">
-                  <div className="w-[54px] h-[54px] rounded-full bg-white/[0.02] border border-border-dim flex items-center justify-center text-muted group-hover:text-accent group-hover:border-accent/50 transition-colors duration-300">
-                    <Briefcase size={20} aria-hidden="true" />
+                {/* Meta Column */}
+                <div className="md:col-span-3 flex flex-col gap-2">
+                  <div className="text-[11px] font-semibold text-muted uppercase tracking-[0.2em]">
+                    {exp.period}
                   </div>
                 </div>
 
-                {/* Content Card */}
-                <div className="flex-grow bg-white/[0.02] border border-border-dim rounded-2xl p-6 sm:p-8 hover:border-border-dim/80 transition-colors duration-300">
-                  <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6">
-                    <div>
-                      <h3 className="text-xl sm:text-2xl font-serif italic text-foreground mb-1 group-hover:text-accent transition-colors duration-300">
-                        {exp.role}
-                      </h3>
-                      <p className="text-sm font-mono text-muted uppercase tracking-wider">
-                        {exp.company}
-                      </p>
-                    </div>
-                    
-                    <div className="flex items-center gap-2 text-xs font-mono text-muted bg-white/5 border border-border-dim px-3 py-1.5 rounded-full whitespace-nowrap w-fit">
-                      <Calendar size={14} aria-hidden="true" />
-                      <span>{exp.period}</span>
-                    </div>
-                  </div>
+                {/* Content Column */}
+                <div className="md:col-span-9 flex flex-col">
+                  <h3 className="text-2xl sm:text-3xl font-display font-medium text-foreground mb-1 group-hover:text-accent transition-colors duration-300">
+                    {exp.role}
+                  </h3>
+                  <p className="text-sm font-semibold text-white/50 uppercase tracking-widest mb-6">
+                    {exp.company}
+                  </p>
 
-                  <p className="text-muted leading-relaxed mb-6">
+                  <p className="text-muted leading-relaxed mb-8 max-w-2xl font-light">
                     {exp.description}
                   </p>
 
@@ -108,7 +96,7 @@ export default function Experience() {
                     {exp.skills.map((skill, tagIndex) => (
                       <span 
                         key={tagIndex} 
-                        className="text-[10px] uppercase font-bold tracking-widest px-3 py-1 bg-white/5 text-muted hover:text-foreground hover:bg-white/10 transition-colors rounded-sm cursor-default"
+                        className="text-[10px] uppercase font-bold tracking-widest px-3 py-1.5 border border-white/10 text-white/60 hover:text-white hover:border-white/30 transition-colors rounded-full cursor-default"
                       >
                         {skill}
                       </span>
