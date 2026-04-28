@@ -18,7 +18,7 @@ function sendError(error) {
 }
 
 // Only notify the parent frame after the server confirms the error passed
-// the filter and the overlay will be shown.
+//The filter and the overlay will be shown.
 hot.on("runtime-error-plugin:notify-parent", () => {
   try {
     window.parent.postMessage({ type: "runtime-error", id: null }, "*");
