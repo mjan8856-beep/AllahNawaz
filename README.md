@@ -54,11 +54,11 @@ window.$RefreshSig$ = () => (type) => type;</script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500;1,600;1,700&display=swap" rel="stylesheet">
     <script type="module">"use strict";(()=>{var O="0.5.1";var v={HIGHLIGHT_COLOR:"#0079F2",HIGHLIGHT_BG:"#0079F210",ALLOWED_PARENT_DOMAINS:[".replit.dev",".replit.com",".replit-staging.com",".repl.co"],THEME_PREVIEW_STYLE_ID:"replit-theme-preview",MAX_SIBLING_HIGHLIGHTERS:1e3,MAX_DESCENDANTS_FOR_SCREENSHOT:1500},ie=`
   [contenteditable] {
-    outline: none !important;
+    outline: none! important;
   }
 
-  [contenteditable]:focus {
-    outline: none !important;
+  [contenteditable]: focus {
+    outline: none  !important;
   }
 `,ne=`
   .beacon-highlighter {
@@ -68,10 +68,10 @@ window.$RefreshSig$ = () => (type) => type;</script>
     box-sizing: border-box;
     pointer-events: none;
     outline: 2px dashed ${v.HIGHLIGHT_COLOR} !important;
-    outline-offset: 0 !important;
-    margin: 0 !important;
-    padding: 0 !important;
-    transform: none !important;
+    outline-offset: 0 ! important;
+    margin: 0  ! important;
+    padding: 0 ! important;
+    transform: none   !important;
     background: ${v.HIGHLIGHT_BG} !important;
     opacity: 0;
   }
@@ -86,7 +86,7 @@ window.$RefreshSig$ = () => (type) => type;</script>
     pointer-events: none;
     outline: 2px solid ${v.HIGHLIGHT_COLOR} !important;
     outline-offset: 3px !important;
-    background: none !important;
+    background: none! important;
   }
   
   .beacon-label {
@@ -122,10 +122,10 @@ window.$RefreshSig$ = () => (type) => type;</script>
     position: fixed;
     pointer-events: none;
     outline: 2px dashed ${v.HIGHLIGHT_COLOR} !important;
-    outline-offset: 0 !important;
-    margin: 0 !important;
-    padding: 0 !important;
-    transform: none !important;
+    outline-offset: 0  !important;
+    margin: 0 ! important;
+    padding: 0  !important;
+    transform: none ! important;
     background: ${v.HIGHLIGHT_BG} !important;
   }
 `;function Fe(e,i){return e[13]=1,e[14]=i>>8,e[15]=i&255,e[16]=i>>8,e[17]=i&255,e}var he=112,de=72,ue=89,ge=115,G;function Ue(){let e=new Int32Array(256);for(let i=0;i<256;i++){let t=i;for(let n=0;n<8;n++)t=t&1?3988292384^t>>>1:t>>>1;e[i]=t}return e}function $e(e){let i=-1;G||(G=Ue());for(let t=0;t<e.length;t++)i=G[(i^e[t])&255]^i>>>8;return i^-1}function We(e){let i=e.length-1;for(let t=i;t>=4;t--)if(e[t-4]===9&&e[t-3]===he&&e[t-2]===de&&e[t-1]===ue&&e[t]===ge)return t-3;return 0}function Ge(e,i,t=!1){let n=new Uint8Array(13);i*=39.3701,n[0]=he,n[1]=de,n[2]=ue,n[3]=ge,n[4]=i>>>24,n[5]=i>>>16,n[6]=i>>>8,n[7]=i&255,n[8]=n[4],n[9]=n[5],n[10]=n[6],n[11]=n[7],n[12]=1;let r=$e(n),o=new Uint8Array(4);if(o[0]=r>>>24,o[1]=r>>>16,o[2]=r>>>8,o[3]=r&255,t){let l=We(e);return e.set(n,l),e.set(o,l+13),e}else{let l=new Uint8Array(4);l[0]=0,l[1]=0,l[2]=0,l[3]=9;let s=new Uint8Array(54);return s.set(e,0),s.set(l,33),s.set(n,37),s.set(o,50),s}}var me="[modern-screenshot]",C=typeof window<"u",Ve=C&&"Worker"in window,je=C&&"atob"in window,ii=C&&"btoa"in window,j=C?window.navigator?.userAgent:"",fe=j.includes("Chrome"),B=j.includes("AppleWebKit")&&!fe,z=j.includes("Firefox"),ze=e=>e&&"__CONTEXT__"in e,qe=e=>e.constructor.name==="CSSFontFaceRule",Xe=e=>e.constructor.name==="CSSImportRule",S=e=>e.nodeType===1,_=e=>typeof e.className=="object",pe=e=>e.tagName==="image",Ye=e=>e.tagName==="use",R=e=>S(e)&&typeof e.style<"u"&&!_(e),Ke=e=>e.nodeType===8,Je=e=>e.nodeType===3,L=e=>e.tagName==="IMG",k=e=>e.tagName==="VIDEO",Qe=e=>e.tagName==="CANVAS",Ze=e=>e.tagName==="TEXTAREA",et=e=>e.tagName==="INPUT",tt=e=>e.tagName==="STYLE",it=e=>e.tagName==="SCRIPT",nt=e=>e.tagName==="SELECT",rt=e=>e.tagName==="SLOT",ot=e=>e.tagName==="IFRAME",st=(...e)=>console.warn(me,...e);function lt(e){let i=e?.createElement?.("canvas");return i&&(i.height=i.width=1),!!i&&"toDataURL"in i&&!!i.toDataURL("image/webp").includes("image/webp")}var V=e=>e.startsWith("data:");function be(e,i){if(e.match(/^[a-z]+:\/\//i))return e;if(C&&e.match(/^\/\//))return window.location.protocol+e;if(e.match(/^[a-z]+:/i)||!C)return e;let t=F().implementation.createHTMLDocument(),n=t.createElement("base"),r=t.createElement("a");return t.head.appendChild(n),t.body.appendChild(r),i&&(n.href=i),r.href=e,r.href}function F(e){return(e&&S(e)?e?.ownerDocument:e)??window.document}var U="http://www.w3.org/2000/svg";function at(e,i,t){let n=F(t).createElementNS(U,"svg");return n.setAttributeNS(null,"width",e.toString()),n.setAttributeNS(null,"height",i.toString()),n.setAttributeNS(null,"viewBox",`0 0 ${e} ${i}`),n}function ct(e,i){let t=new XMLSerializer().serializeToString(e);return i&&(t=t.replace(/[\u0000-\u0008\v\f\u000E-\u001F\uD800-\uDFFF\uFFFE\uFFFF]/gu,"")),`data:image/svg+xml;charset=utf-8,${encodeURIComponent(t)}`}async function ht(e,i="image/png",t=1){try{return await new Promise((n,r)=>{e.toBlob(o=>{o?n(o):r(new Error("Blob is null"))},i,t)})}catch(n){if(je)return dt(e.toDataURL(i,t));throw n}}function dt(e){let[i,t]=e.split(","),n=i.match(/data:(.+);/)?.[1]??void 0,r=window.atob(t),o=r.length,l=new Uint8Array(o);for(let s=0;s<o;s+=1)l[s]=r.charCodeAt(s);return new Blob([l],{type:n})}function Ee(e,i){return new Promise((t,n)=>{let r=new FileReader;r.onload=()=>t(r.result),r.onerror=()=>n(r.error),r.onabort=()=>n(new Error(`Failed read blob to ${i}`)),i==="dataUrl"?r.readAsDataURL(e):i==="arrayBuffer"&&r.readAsArrayBuffer(e)})}var ut=e=>Ee(e,"dataUrl"),gt=e=>Ee(e,"arrayBuffer");function H(e,i){let t=F(i).createElement("img");return t.decoding="sync",t.loading="eager",t.src=e,t}function x(e,i){return new Promise(t=>{let{timeout:n,ownerDocument:r,onError:o,onWarn:l}=i??{},s=typeof e=="string"?H(e,F(r)):e,c=null,h=null;function a(){t(s),c&&clearTimeout(c),h?.()}if(n&&(c=setTimeout(a,n)),k(s)){let d=s.currentSrc||s.src;if(!d)return s.poster?x(s.poster,i).then(t):a();if(s.readyState>=2)return a();let u=a,m=g=>{l?.("Failed video load",d,g),o?.(g),a()};h=()=>{s.removeEventListener("loadeddata",u),s.removeEventListener("error",m)},s.addEventListener("loadeddata",u,{once:!0}),s.addEventListener("error",m,{once:!0})}else{let d=pe(s)?s.href.baseVal:s.currentSrc||s.src;if(!d)return a();let u=async()=>{if(L(s)&&"decode"in s)try{await s.decode()}catch(g){l?.("Failed to decode image, trying to render anyway",s.dataset.originalSrc||d,g)}a()},m=g=>{l?.("Failed image load",s.dataset.originalSrc||d,g),a()};if(L(s)&&s.complete)return u();h=()=>{s.removeEventListener("load",u),s.removeEventListener("error",m)},s.addEventListener("load",u,{once:!0}),s.addEventListener("error",m,{once:!0})}})}async function mt(e,i){R(e)&&(L(e)||k(e)?await x(e,i):await Promise.all(["img","video"].flatMap(t=>Array.from(e.querySelectorAll(t)).map(n=>x(n,i)))))}var ve=function(){let i=0,t=()=>`0000${(Math.random()*36**4<<0).toString(36)}`.slice(-4);return()=>(i+=1,`u${t()}${i}`)}();function we(e){return e?.split(",").map(i=>i.trim().replace(/"|'/g,"").toLowerCase()).filter(Boolean)}var re=0;function ft(e){let i=`${me}[#${re}]`;return re++,{time:t=>e&&console.time(`${i} ${t}`),timeEnd:t=>e&&console.timeEnd(`${i} ${t}`),warn:(...t)=>e&&st(...t)}}function pt(e){return{cache:e?"no-cache":"force-cache"}}async function q(e,i){return ze(e)?e:bt(e,{...i,autoDestruct:!0})}async function bt(e,i){let{scale:t=1,workerUrl:n,workerNumber:r=1}=i||{},o=!!i?.debug,l=i?.features??!0,s=e.ownerDocument??(C?window.document:void 0),c=e.ownerDocument?.defaultView??(C?window:void 0),h=new Map,a={width:0,height:0,quality:1,type:"image/png",scale:t,backgroundColor:null,style:null,filter:null,maximumCanvasSize:0,timeout:3e4,progress:null,debug:o,fetch:{requestInit:pt(i?.fetch?.bypassingCache),placeholderImage:"data:image/png;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7",bypassingCache:!1,...i?.fetch},fetchFn:null,font:{},drawImageInterval:100,workerUrl:null,workerNumber:r,onCloneNode:null,onEmbedNode:null,onCreateForeignObjectSvg:null,includeStyleProperties:null,autoDestruct:!1,...i,__CONTEXT__:!0,log:ft(o),node:e,ownerDocument:s,ownerWindow:c,dpi:t===1?null:96*t,svgStyleElement:ye(s),svgDefsElement:s?.createElementNS(U,"defs"),svgStyles:new Map,defaultComputedStyles:new Map,workers:[...Array.from({length:Ve&&n&&r?r:0})].map(()=>{try{let m=new Worker(n);return m.onmessage=async g=>{let{url:f,result:p}=g.data;p?h.get(f)?.resolve?.(p):h.get(f)?.reject?.(new Error(`Error receiving message from worker: ${f}`))},m.onmessageerror=g=>{let{url:f}=g.data;h.get(f)?.reject?.(new Error(`Error receiving message from worker: ${f}`))},m}catch(m){return a.log.warn("Failed to new Worker",m),null}}).filter(Boolean),fontFamilies:new Map,fontCssTexts:new Map,acceptOfImage:`${[lt(s)&&"image/webp","image/svg+xml","image/*","*/*"].filter(Boolean).join(",")};q=0.8`,requests:h,drawImageCount:0,tasks:[],features:l,isEnable:m=>m==="restoreScrollPosition"?typeof l=="boolean"?!1:l[m]??!1:typeof l=="boolean"?l:l[m]??!0};a.log.time("wait until load"),await mt(e,{timeout:a.timeout,onWarn:a.log.warn}),a.log.timeEnd("wait until load");let{width:d,height:u}=Et(e,a);return a.width=d,a.height=u,a}function ye(e){if(!e)return;let i=e.createElement("style"),t=i.ownerDocument.createTextNode(`
@@ -167,7 +167,7 @@ window.$RefreshSig$ = () => (type) => type;</script>
     } else {
       // Config not ready yet — wait for the config-ready event, but proceed
       // without a config after 1 second.  The config is optional (projects
-      // without a tailwind config file will never fire the ready event).
+      // without a tailwind config file, the ready event will never fire.
       var configTimeout = setTimeout(function() { loadTailwind(); }, 1000);
       window.addEventListener('replit-tailwind-config-ready', function() {
         clearTimeout(configTimeout);
