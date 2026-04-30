@@ -55,7 +55,7 @@ export default function About() {
             <span className="text-white/40">Your Design Specialist</span>
           </h2>
           <p className="text-muted text-lg max-w-xl mx-auto leading-relaxed">
-            Product Designer who thrives at the intersection of business strategy and human-centered design.
+            Product Designer passionate about turning ideas into beautiful, user-friendly digital products.
           </p>
         </div>
 
@@ -74,7 +74,7 @@ export default function About() {
                
                <div className="relative w-full sm:w-64 aspect-[4/5] rounded-[2.5rem] overflow-hidden">
                 <img 
-                  src="https://images.unsplash.com/photo-1633332755192-727a05c4013d?auto=format&fit=crop&q=80&w=800&h=1000" 
+                  src="/profile.webp" 
                   className="w-full h-full object-cover grayscale transition-all duration-700 group-hover:grayscale-0 group-hover:scale-105" 
                   loading="lazy"
                   alt="Allah Nawaz"
@@ -89,8 +89,8 @@ export default function About() {
 
             <div className="flex-1 flex flex-col gap-8 w-full">
               <div className="flex flex-col gap-2">
-                <h4 className="text-2xl font-display font-bold">Hello, I am<br/>Allah Nawaz</h4>
-                <p className="text-muted text-sm leading-relaxed">Product Designer & Web Specialist helping brands grow through intentional design.</p>
+                <h3 className="text-2xl font-display font-medium text-foreground">Hello, I am<br/>Allah Nawaz</h3>
+                <p className="text-muted text-sm leading-relaxed">Product Designer aiming to help your business grow with honest and intentional design.</p>
               </div>
 
               <div className="flex items-center gap-4">
@@ -132,7 +132,7 @@ export default function About() {
           >
             <div className="space-y-6">
               <p className="text-lg leading-relaxed text-white/90">
-                I help startups and established brands build SaaS dashboards, mobile apps, and e-commerce stores that are as functional as they are beautiful. Beyond just "making things look good," I focus on reducing user friction and building scalable systems that grow with your company.
+                I help businesses build digital products that people actually want to use. Instead of just making things look pretty, I focus on solving real problems, making apps easy to navigate, and creating designs that help your business grow.
               </p>
             </div>
 
@@ -150,7 +150,7 @@ export default function About() {
                       {skill.icon}
                     </div>
                     <div className="space-y-1">
-                      <h5 className="font-bold text-white transition-colors">{skill.name}</h5>
+                      <h4 className="font-bold text-white transition-colors">{skill.name}</h4>
                       <p className="text-xs text-muted leading-relaxed line-clamp-2">{skill.desc}</p>
                     </div>
                   </div>

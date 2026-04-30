@@ -10,15 +10,17 @@ import Projects from './components/Projects';
 import Process from './components/Process';
 import Skills from './components/Skills';
 import Testimonials from './components/Testimonials';
-import Achievements from './components/Achievements';
+import Impact from './components/Impact';
 import FAQ from './components/FAQ';
 import Contact from './components/Contact';
 import Footer from './components/Footer';
 import ScrollToTop from './components/ScrollToTop';
+import Background from './components/Background';
 
 export default function App() {
   return (
-    <div className="font-sans text-foreground bg-background min-h-screen relative overflow-hidden selection:bg-accent selection:text-white">
+    <div className="font-sans text-foreground bg-transparent min-h-screen relative overflow-hidden selection:bg-accent selection:text-black">
+      <Background />
       <div className="grain-overlay" />
       <Navbar />
       <ScrollToTop />
@@ -36,7 +38,7 @@ export default function App() {
         <Projects />
         <Experience />
         <Testimonials />
-        <Achievements />
+        <Impact />
         <Process />
         <Skills />
         <FAQ />

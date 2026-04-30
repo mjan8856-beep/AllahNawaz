@@ -3,34 +3,34 @@ import { Check, X } from 'lucide-react';
 
 const advantages = [
   {
-    merit: "Skilled Professional",
-    meritDesc: "Gain access to top-tier talent with years of experience, ensuring flawless execution",
-    demerit: "Amateur Designer",
-    demeritDesc: "Lack of experience may result in design inconsistencies and overlooked details",
+    merit: "Pro-Level Quality",
+    meritDesc: "Gain access to top-tier talent with years of experience, ensuring flawless execution.",
+    demerit: "Amateur Mistakes",
+    demeritDesc: "Lack of experience often results in design inconsistencies and overlooked details.",
   },
   {
-    merit: "Future-Ready Designs",
+    merit: "Designs That Last",
     meritDesc: "Crafting modern, scalable designs that grow with your business and stay ahead of trends.",
     demerit: "Outdated Concepts",
     demeritDesc: "Stale designs that don't reflect current trends or your evolving brand narrative.",
   },
   {
-    merit: "Client-Centric Collaboration",
-    meritDesc: "Your vision leads the way — I work closely with you to bring ideas to life with precision and creativity.",
-    demerit: "Detached Communication",
-    demeritDesc: "Lack of collaboration and poor feedback loops can result in misaligned outcomes.",
+    merit: "True Collaboration",
+    meritDesc: "Your vision leads the way. I work closely with you to bring ideas to life with precision and creativity.",
+    demerit: "Poor Communication",
+    demeritDesc: "Lack of collaboration and poor feedback loops can result in frustrating delays.",
   },
   {
-    merit: "Timely Project Tracking",
-    meritDesc: "Stay informed with regular progress updates and timely deliverables",
-    demerit: "Unstructured & Unreliable Work",
-    demeritDesc: "Inconsistent timelines and last-minute changes can compromise quality",
+    merit: "Clear Timelines",
+    meritDesc: "Stay informed with regular progress updates and punctual, high-quality deliverables.",
+    demerit: "Unreliable Work",
+    demeritDesc: "Inconsistent timelines and last-minute changes can absolutely ruin a launch.",
   }
 ];
 
 export default function WhyDesign() {
   return (
-    <section className="py-32 px-6 sm:px-10 lg:px-20 bg-background flex justify-center">
+    <section className="py-32 px-6 sm:px-10 lg:px-20 flex justify-center">
       <div className="max-w-7xl w-full">
         <motion.div
            initial={{ opacity: 0, y: 20 }}
@@ -42,9 +42,9 @@ export default function WhyDesign() {
              <span className="text-[10px] uppercase tracking-widest font-bold">Why choose me</span>
           </div>
           <h2 className="text-5xl md:text-6xl font-serif italic text-foreground mt-4">
-            Why me as <span className="text-foreground/40 font-display not-italic">Design Partner</span>
+            Why me as a <span className="text-foreground/40 font-display not-italic">Design Partner</span>
           </h2>
-          <p className="text-muted mt-4 font-light">Why Partner With Me for the Design Excellence</p>
+          <p className="text-muted mt-4 font-light">What you get when we work together.</p>
         </motion.div>
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-px bg-white/10 border border-white/10 rounded-[2rem] overflow-hidden">

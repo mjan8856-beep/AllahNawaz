@@ -1,6 +1,5 @@
-import { motion, AnimatePresence } from 'motion/react';
-import { Quote, Star, ChevronLeft, ChevronRight } from 'lucide-react';
-import { useState } from 'react';
+import { motion } from 'motion/react';
+import { Star } from 'lucide-react';
 
 const testimonials = [
   {
@@ -27,121 +26,84 @@ const testimonials = [
     name: "Sofia Toms",
     role: "Founder at GreenK Studios",
     text: "The designs speak for themselves — bold, strategic, and impactful. The visuals resonated with our target audience and boosted our product's visibility.",
+  },
+  {
+    name: "David Park",
+    role: "CTO at Nexus AI",
+    text: "He brings a rare combination of pure aesthetic talent and deep technical constraints understanding. His AI interfaces are clean, intuitive, and future-proof.",
   }
 ];
 
 export default function Testimonials() {
-  const [currentIndex, setCurrentIndex] = useState(0);
-
-  const handlePrevious = () => {
-    setCurrentIndex((prevIndex) => (prevIndex === 0 ? testimonials.length - 1 : prevIndex - 1));
-  };
-
-  const handleNext = () => {
-    setCurrentIndex((prevIndex) => (prevIndex === testimonials.length - 1 ? 0 : prevIndex + 1));
-  };
-
   return (
-    <section aria-labelledby="testimonials-title" className="py-32 px-6 sm:px-10 lg:px-20 border-t border-white/5 relative overflow-hidden">
+    <section aria-labelledby="testimonials-title" className="py-32 px-6 sm:px-10 lg:px-20 border-t border-border-dim relative overflow-hidden">
       {/* Background glow */}
-      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-3/4 h-3/4 bg-white/5 blur-[120px] rounded-full pointer-events-none" />
+      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[600px] bg-white/[0.02] blur-[120px] rounded-full pointer-events-none" />
 
-      <div className="max-w-5xl mx-auto relative z-10">
+      <div className="max-w-7xl mx-auto relative z-10 flex flex-col gap-20">
+        
         <motion.div 
-          className="text-center mb-16"
+          className="text-center max-w-2xl mx-auto"
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.8 }}
         >
-          <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/5 border border-white/10 mb-6">
-            <Star className="text-accent" size={14} />
-            <span className="text-[10px] uppercase tracking-widest font-bold text-white/80">Reviews</span>
+          <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/5 border border-white/10 mb-8 backdrop-blur-sm">
+            <Star className="text-white" size={14} />
+            <span className="text-[11px] uppercase tracking-[0.2em] font-bold text-white/80">Client Voices</span>
           </div>
           <h2 
             id="testimonials-title"
-            className="text-4xl md:text-5xl lg:text-6xl font-display font-bold text-gradient tracking-tighter mb-4"
+            className="text-4xl md:text-5xl lg:text-6xl font-display font-medium text-foreground tracking-tight leading-[1.1] mb-6"
           >
-            Client Success Stories
+            Don't just take my word for it.
           </h2>
-          <p className="text-muted max-w-xl mx-auto">Real feedback from clients who trusted my design expertise to elevate their brands successfully.</p>
+          <p className="text-muted text-lg md:text-xl">
+            Partnering with visionary founders and product teams to deliver measurable business outcomes through design.
+          </p>
         </motion.div>
 
-        <div className="relative">
-          <div className="overflow-hidden px-4 md:px-12 py-8">
-            <AnimatePresence mode="wait">
-              <motion.div
-                key={currentIndex}
-                initial={{ opacity: 0, x: 50, scale: 0.95 }}
-                animate={{ opacity: 1, x: 0, scale: 1 }}
-                exit={{ opacity: 0, x: -50, scale: 0.95 }}
-                transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
-                className="glass-card rounded-[2.5rem] p-8 md:p-12 relative"
-              >
-                <Quote className="absolute top-8 right-12 text-white/5 w-24 h-24 rotate-180" aria-hidden="true" />
-                
-                <div className="flex flex-col gap-8 relative z-10">
-                  <div className="flex gap-1" aria-label="5 star rating">
-                    {[...Array(5)].map((_, starIndex) => (
-                      <Star key={starIndex} size={16} className="fill-accent text-accent drop-shadow-[0_0_8px_rgba(255,255,255,0.5)]" aria-hidden="true" />
-                    ))}
-                  </div>
+        {/* Masonry Grid */}
+        <div className="columns-1 md:columns-2 lg:columns-3 gap-6 space-y-6">
+          {testimonials.map((testimonial, index) => (
+            <motion.div
+              key={index}
+              initial={{ opacity: 0, y: 30 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, margin: "-50px" }}
+              transition={{ duration: 0.6, delay: index * 0.1, ease: [0.16, 1, 0.3, 1] }}
+              className="glass-card rounded-[2rem] p-8 md:p-10 flex flex-col gap-8 relative group break-inside-avoid"
+            >
+              {/* Subtle hover gradient */}
+              <div className="absolute inset-0 bg-gradient-to-br from-white/[0.04] to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-700 rounded-[2rem] pointer-events-none" />
+              
+              {/* Top Section: Stars */}
+              <div className="flex gap-1" aria-label="5 star rating">
+                {[...Array(5)].map((_, starIndex) => (
+                  <Star key={starIndex} size={14} className="fill-white text-white opacity-80" aria-hidden="true" />
+                ))}
+              </div>
 
-                  <blockquote className="text-xl md:text-2xl leading-relaxed text-white/90 font-light">
-                    "{testimonials[currentIndex].text}"
-                  </blockquote>
+              {/* Quote */}
+              <blockquote className="text-lg md:text-xl leading-relaxed text-white/90 font-light relative z-10">
+                "{testimonial.text}"
+              </blockquote>
 
-                  <div className="flex items-center gap-4 mt-4">
-                    <div className="w-12 h-12 rounded-full bg-white/10 flex items-center justify-center text-xl font-display font-bold text-white">
-                      {testimonials[currentIndex].name.charAt(0)}
-                    </div>
-                    <div>
-                      <h3 className="text-white font-bold text-lg">{testimonials[currentIndex].name}</h3>
-                      <p className="text-white/40 text-[10px] uppercase tracking-widest font-bold mt-1">{testimonials[currentIndex].role}</p>
-                    </div>
-                  </div>
+              {/* Author */}
+              <div className="flex items-center gap-4 mt-auto pt-6 border-t border-white/[0.04] relative z-10">
+                <div className="w-12 h-12 rounded-full bg-white/5 border border-white/10 flex items-center justify-center text-sm font-display font-bold text-white uppercase shrink-0">
+                  {testimonial.name.split(' ').map(n => n[0]).join('')}
                 </div>
-              </motion.div>
-            </AnimatePresence>
-          </div>
-
-          {/* Navigation Controls */}
-          <div className="mt-8 flex items-center justify-between md:justify-center gap-8 px-4">
-            <button 
-              onClick={handlePrevious}
-              className="w-12 h-12 rounded-full glass-card flex items-center justify-center hover:bg-white/10 transition-colors shadow-lg disabled:opacity-50"
-              aria-label="Previous testimonial"
-            >
-              <ChevronLeft size={20} className="text-white" />
-            </button>
-
-            {/* Pagination Indicators */}
-            <div className="flex gap-2" role="tablist">
-              {testimonials.map((_, index) => (
-                <button
-                  key={index}
-                  role="tab"
-                  aria-selected={currentIndex === index}
-                  aria-label={`Go to testimonial ${index + 1}`}
-                  onClick={() => setCurrentIndex(index)}
-                  className={`h-2 transition-all duration-500 rounded-full ${
-                    currentIndex === index 
-                      ? 'w-8 bg-white' 
-                      : 'w-2 bg-white/20 hover:bg-white/40'
-                  }`}
-                />
-              ))}
-            </div>
-
-            <button 
-              onClick={handleNext}
-              className="w-12 h-12 rounded-full glass-card flex items-center justify-center hover:bg-white/10 transition-colors shadow-lg disabled:opacity-50"
-              aria-label="Next testimonial"
-            >
-              <ChevronRight size={20} className="text-white" />
-            </button>
-          </div>
+                <div className="overflow-hidden">
+                  <h3 className="text-white font-medium text-base truncate">{testimonial.name}</h3>
+                  <p className="text-white/50 text-sm truncate">{testimonial.role}</p>
+                </div>
+              </div>
+            </motion.div>
+          ))}
         </div>
+
       </div>
     </section>
   );

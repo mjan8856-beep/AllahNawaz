@@ -38,7 +38,7 @@ const experiences = [
 
 export default function Experience() {
   return (
-    <section id="experience" aria-labelledby="experience-title" className="py-32 px-6 sm:px-10 lg:px-20 border-t border-border-dim relative bg-background">
+    <section id="experience" aria-labelledby="experience-title" className="py-32 px-6 sm:px-10 lg:px-20 border-t border-border-dim relative">
       <div className="max-w-4xl mx-auto">
         <motion.div
            initial={{ opacity: 0, y: 30 }}
@@ -48,17 +48,17 @@ export default function Experience() {
            className="mb-20"
         >
           <div className="flex items-center gap-4 mb-4">
-            <h2 
+            <span 
               id="experience-title"
               className="text-[10px] sm:text-xs text-accent uppercase tracking-widest font-bold"
             >
               Experience
-            </h2>
+            </span>
             <div className="h-[1px] bg-border-dim flex-grow max-w-xs" />
           </div>
-          <p className="text-3xl md:text-5xl font-serif italic text-foreground max-w-2xl">
+          <h2 className="text-3xl md:text-5xl font-serif italic text-foreground max-w-2xl">
             My professional journey so far.
-          </p>
+          </h2>
         </motion.div>
 
         <div className="relative mt-12 sm:mt-20">

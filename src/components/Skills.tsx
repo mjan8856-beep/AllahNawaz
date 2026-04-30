@@ -31,30 +31,30 @@ const groupedSkills = [
     category: "Design Specialization",
     icon: Palette,
     items: [
-      { id: "product-strategy", name: "Product Strategy & UX", desc: "Aligning user needs with business goals to drive measurable impact." },
-      { id: "saas-dashboards", name: "SaaS Dashboards", desc: "Simplifying complex data into intuitive, actionable user interfaces." },
-      { id: "design-systems", name: "Design Systems", desc: "Building scalable, accessible component libraries for consistent branding." },
-      { id: "mobile-ux", name: "Mobile-First UX", desc: "Crafting fluid, responsive cross-platform native and web experiences." },
+      { id: "product-strategy", name: "Product Strategy & UX", desc: "Connecting what users want with what the business needs." },
+      { id: "saas-dashboards", name: "SaaS Dashboards", desc: "Making complicated data easy to understand and use." },
+      { id: "design-systems", name: "Design Systems", desc: "Creating organized design rules to keep everything looking great." },
+      { id: "mobile-ux", name: "Mobile-First UX", desc: "Designing apps that feel great on your phone or your computer." },
     ]
   },
   {
     category: "Methodology & Execution",
     icon: Workflow,
     items: [
-      { id: "hi-fi-proto", name: "High-Fidelity Prototyping", desc: "Creating realistic, interactive mockups to validate features early." },
+      { id: "hi-fi-proto", name: "High-Fidelity Prototyping", desc: "Building clickable prototypes to test ideas before we write code." },
       { id: "interaction-design", name: "Interaction Design", desc: "Designing micro-interactions that breathe life into digital products." },
-      { id: "conversion-opt", name: "Conversion Optimization", desc: "E-commerce funnels tailored to decrease friction and increase sales." },
-      { id: "human-research", name: "Human-Centered Research", desc: "Usability testing, interviews, and analytics-driven design decisions." },
+      { id: "conversion-opt", name: "Conversion Optimization", desc: "Making the buying process easier to help you get more sales." },
+      { id: "human-research", name: "Human-Centered Research", desc: "Talking to users to understand what they really need." },
     ]
   },
   {
     category: "Software Ecosystem",
     icon: Layers,
     items: [
-      { id: "figma", name: "Figma & FigJam", desc: "Advanced autolayout, variables, and collaborative brainstorming." },
-      { id: "frontend", name: "Front-End Implementation", desc: "React, Tailwind CSS, and Framer Motion for pixel-perfect handoffs." },
-      { id: "adobe-suite", name: "Adobe Creative Suite", desc: "Illustrator and Photoshop for custom vector graphics and visual assets." },
-      { id: "framer", name: "Interactive Web (Framer)", desc: "Building robust, animated, and deployment-ready web experiences." },
+      { id: "figma", name: "Figma & FigJam", desc: "Where the magic happens. Prototyping, designing, and collaborating." },
+      { id: "frontend", name: "Front-End Implementation", desc: "Writing clean, fast code to bring designs to life." },
+      { id: "adobe-suite", name: "Adobe Creative Suite", desc: "Creating custom icons, logos, and graphics." },
+      { id: "framer", name: "Interactive Web (Framer)", desc: "Building websites that look great and feel amazing to use." },
     ]
   }
 ];
@@ -145,7 +145,7 @@ export default function Skills() {
   };
 
   return (
-    <section id="skills" className="py-32 px-6 sm:px-10 lg:px-20 bg-background overflow-hidden relative">
+    <section id="skills" className="py-32 px-6 sm:px-10 lg:px-20 overflow-hidden relative">
       <div className="max-w-7xl mx-auto flex flex-col gap-16">
         
         {/* Section Heading */}
@@ -160,10 +160,10 @@ export default function Skills() {
               <span className="text-[11px] uppercase tracking-[0.2em] font-bold text-white">Skills & Toolkit</span>
             </motion.div>
             <h2 className="text-5xl md:text-6xl font-display font-bold text-white tracking-tight leading-tight">
-              Mastery & <span className="text-white/40">Expertise</span>
+              Tools & <span className="text-white/40">Expertise</span>
             </h2>
             <p className="text-muted text-lg mt-6 leading-relaxed">
-              Bridging the gap between human needs and business objectives with a high-end design ecosystem.
+              Everything I use to turn ideas into reality.
             </p>
           </div>
           

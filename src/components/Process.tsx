@@ -1,100 +1,99 @@
 import { motion } from 'motion/react';
 import { MessageSquare, ClipboardList, Zap, Rocket, CheckCircle2 } from 'lucide-react';
 
-const steps = [
+const phases = [
   {
-    title: "Let's Get In Touch",
-    description: "Start by reaching out through our contact page. Fill out the form or book a call to discuss your project, goals, and ideas.",
+    phase: "01",
+    title: "Discovery & Strategy",
+    description: "We start by understanding your business, your goals, and exactly what your users need.",
     icon: MessageSquare,
   },
   {
-    title: "Grab Your Designs",
-    description: "Tell me your unique vision, and I’ll create stunning, functional designs that perfectly align with your goals",
+    phase: "02",
+    title: "Planning & Wireframes",
+    description: "We plan the structure and user journey before we start designing, so everything makes sense.",
     icon: ClipboardList,
   },
   {
-    title: "Kickstart Development",
-    description: "I expertly transform your designs into a powerful, scalable solution, fully ready to launch",
+    phase: "03",
+    title: "Design & Build",
+    description: "Crafting beautiful, high-quality designs and turning them into a living, breathing product.",
     icon: Zap,
   },
   {
-    title: "And Hand Over",
-    description: "Receive a fully tested, polished, and high-quality product tailored to your needs with ongoing support",
+    phase: "04",
+    title: "Testing & Launch",
+    description: "Making sure everything works perfectly across all devices before we go live.",
     icon: Rocket,
   }
 ];
 
 export default function Process() {
   return (
-    <section id="process" className="py-32 px-6 sm:px-10 lg:px-20 bg-background flex justify-center">
+    <section id="process" className="py-32 px-6 sm:px-10 lg:px-20 flex justify-center border-t border-white/[0.04]">
       <div className="max-w-7xl w-full">
         <motion.div
            initial={{ opacity: 0, y: 20 }}
            whileInView={{ opacity: 1, y: 0 }}
-           className="mb-24 text-center"
+           className="mb-24 text-center max-w-3xl mx-auto"
         >
-          <div className="inline-flex items-center gap-3 px-4 py-2 rounded-full border border-white/10 bg-white/5 backdrop-blur-md mb-8">
-             <div className="w-1.5 h-1.5 rounded-full bg-white animate-pulse" />
-             <span className="text-[11px] uppercase tracking-[0.2em] font-bold text-white">How it works</span>
-          </div>
-          <h2 className="text-5xl md:text-6xl font-display font-bold text-white tracking-tight leading-tight">
-            Process <span className="text-white/40">Is Everything</span>
+          <h2 className="text-4xl md:text-6xl font-display font-medium text-foreground tracking-tight leading-tight mb-6">
+            How I <span className="text-muted">Work</span>
           </h2>
-          <p className="text-muted mt-6 max-w-xl mx-auto text-lg leading-relaxed">Simple, streamlined process is what get's you results</p>
+          <p className="text-muted text-lg leading-relaxed font-light">
+            A clear, simple process to turn your ideas into a finished product without the guesswork.
+          </p>
         </motion.div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 relative">
-          {steps.map((step, index) => (
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 relative">
+          {/* Connecting Line for Desktop */}
+          <div className="hidden lg:block absolute top-8 left-[12%] right-[12%] h-px bg-white/[0.08]" role="presentation" />
+          
+          {phases.map((item, index) => (
             <motion.div
               key={index}
               initial={{ opacity: 0, y: 30 }}
               whileInView={{ opacity: 1, y: 0 }}
-              transition={{ delay: index * 0.1, duration: 0.8 }}
+              transition={{ delay: index * 0.1, duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
               viewport={{ once: true }}
-              className="glass-card p-10 rounded-[2rem] relative group hover:bg-white/[0.06] transition-all duration-500 overflow-hidden"
+              className="relative group flex flex-col pt-4 lg:pt-0"
             >
-              {/* Step number at top right within the card */}
-              <div className="absolute top-8 right-8 px-3 py-1 rounded-full bg-white/5 border border-white/10 text-xs font-bold text-white/40 group-hover:text-white transition-colors">
-                {index + 1}
-              </div>
-              
-              <div className="w-14 h-14 rounded-2xl bg-white/5 border border-white/10 flex items-center justify-center mb-8 group-hover:bg-white group-hover:text-black transition-all duration-500">
-                <step.icon size={24} className="group-hover:scale-110 transition-transform duration-500" />
-              </div>
-              
-              <h3 className="text-xl font-display font-bold text-white mb-4">{step.title}</h3>
-              <p className="text-muted text-sm leading-relaxed mb-10">{step.description}</p>
-
-              <div className="h-px w-full bg-white/10 mb-6" />
-              
-              <div className="flex items-center gap-3">
-                <div className="px-3 py-1 rounded-full glass-card border-white/5 text-[10px] font-bold text-muted uppercase tracking-widest">
-                  Step {index + 1}
+              <div className="flex items-center gap-4 mb-6 lg:flex-col lg:items-start lg:gap-8">
+                <div className="relative z-10 w-16 h-16 rounded-2xl bg-[var(--color-surface)] border border-white/[0.08] flex items-center justify-center text-muted group-hover:bg-accent group-hover:text-black transition-all duration-300">
+                  <item.icon size={24} />
                 </div>
+                <span className="text-sm font-mono font-medium tracking-widest text-white/30 group-hover:text-muted transition-colors">
+                  PHASE {item.phase}
+                </span>
+              </div>
+
+              <div className="space-y-3 pr-4">
+                <h3 className="text-2xl font-display font-medium text-foreground tracking-tight">{item.title}</h3>
+                <p className="text-muted text-sm leading-relaxed font-light group-hover:text-white/70 transition-colors">
+                  {item.description}
+                </p>
               </div>
             </motion.div>
           ))}
         </div>
 
         <motion.div 
-          initial={{ opacity: 0, scale: 0.95 }}
-          whileInView={{ opacity: 1, scale: 1 }}
-          viewport={{ once: true }}
-          className="mt-20 flex flex-col lg:flex-row items-center justify-between glass-card p-8 sm:p-10 rounded-[2.5rem] border-white/5 gap-10"
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          className="mt-32 p-8 sm:p-12 glass-card rounded-3xl border border-white/[0.08] flex flex-col lg:flex-row items-center justify-between gap-10"
         >
-          <div className="flex flex-col sm:flex-row items-start sm:items-center gap-6">
-            <div className="w-14 h-14 rounded-full bg-white/5 flex items-center justify-center border border-white/10 shrink-0">
-               <CheckCircle2 size={24} className="text-white" />
-            </div>
-            <div>
-              <p className="text-xl font-display font-bold text-white">I am with you in every step</p>
-              <p className="text-sm text-muted mt-1 leading-relaxed">Alongside you at each step for a seamless and collaborative experience</p>
-            </div>
+          <div className="flex flex-col sm:flex-row gap-6 items-start sm:items-center max-w-2xl">
+             <div className="w-14 h-14 rounded-full bg-foreground text-background flex items-center justify-center shrink-0">
+               <CheckCircle2 size={28} />
+             </div>
+              <div className="space-y-2">
+                <h4 className="text-2xl font-display font-medium text-foreground">Commitment to Quality</h4>
+                <p className="text-muted text-base leading-relaxed font-light">I review every detail to ensure your product looks great, works perfectly, and is ready for your users.</p>
+             </div>
           </div>
-
-          <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-4 w-full lg:w-auto">
-             <button className="px-8 py-4 rounded-full glass-card border-white/5 text-sm font-bold hover:bg-white/5 transition-all text-center">See All Projects</button>
-             <button className="px-8 py-4 rounded-full bg-white text-black text-sm font-bold hover:bg-white/90 transition-all text-center">Contact Now</button>
+          <div className="flex flex-col sm:flex-row gap-4 w-full lg:w-auto mt-6 lg:mt-0">
+             <button className="px-8 py-4 rounded-full border border-white/[0.1] text-sm font-medium hover:bg-white/[0.04] transition-all text-center">View Projects</button>
+             <button className="px-8 py-4 rounded-full bg-foreground text-background text-sm font-medium hover:bg-white/90 transition-all text-center">Let's Talk</button>
           </div>
         </motion.div>
       </div>
